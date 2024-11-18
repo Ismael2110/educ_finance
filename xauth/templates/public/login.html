@@ -114,7 +114,7 @@
 
     <h3 class="login-title">Gestion Administratif & Finance</h3>
     <p class="subtitle">Connexion</p>
-
+    
     <form method="post" action="{% url 'user-login' %}" role="form">
         {% csrf_token %}
         <div class="input-container">
@@ -126,6 +126,13 @@
             <label for="password" class="input-label">Mot de passe</label>
         </div>
         <input type="submit" class="btn-primary" value="Se Connecter">
+
+        <div class="flex-sb-m w-full p-t-15 p-b-20">
+            
+        <div class="text-center p-t-45 p-b-20">
+            <a href="{% url 'user-signup' %}" class="txt2"> Activer son compte ? </a>
+        </div>
+        
     </form>
 </div>
 {% endblock content %}

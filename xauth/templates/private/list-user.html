@@ -24,35 +24,29 @@
 {% block other-options %}
 {% if deactivate_user %}
 {% if object.is_active %}
-<a>
-  <span class="text-secondary" data-bs-toggle="popover" data-bs-content="Compte déjà activé" 
-    data-bs-container="body" style="font-size: {{ option_size }}px;">
-    {% icon "key" %}
-  </span>
+<a class="btn btn-outline-secondary btn-sm" data-bs-toggle="popover" data-bs-content="Compte déjà activé" data-bs-container="body" style="font-size: {{ option_size }}px;">
+  {% icon "key" %}
 </a>
 {% else %}
-<a href="{% url 'auth:user-send-key' object.id %}">
-  <span class="text-secondary" data-bs-toggle="popover"  data-bs-content="Activer le compte" 
-    data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
-    {% icon "key" %}
-  </span>
+<a href="{% url 'auth:user-send-key' object.id %}" class="btn btn-outline-secondary btn-sm" data-bs-toggle="popover" data-bs-content="Activer le compte" data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
+  {% icon "key" %}
 </a>
 
 {% endif %}
 {% endif %}
 {% if can_assign %}
 {% if object.is_superuser or object.assign %}
-<a>
-  <span class="text-warning" data-bs-toggle="popover" data-bs-content="A déjà un rôle" 
-    data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
-    {% icon "briefcase" %}
+<a href="{% url 'auth:nomination-create' object.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Donner un rôle">
+  <span class="text-warning" data-bs-toggle="popover" data-bs-content="Donner un rôle" 
+      data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
+      {% icon "briefcase" %}
   </span>
 </a>
 {% else %}
-<a href="{% url 'auth:nomination-create' object.id %}">
+<a href="{% url 'auth:nomination-create' object.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Donner un rôle">
   <span class="text-warning" data-bs-toggle="popover" data-bs-content="Donner un rôle" 
-    data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
-    {% icon "briefcase" %}
+      data-bs-container="body" data-bs-placement="top" style="font-size: {{ option_size }}px;">
+      {% icon "briefcase" %}
   </span>
 </a>
 

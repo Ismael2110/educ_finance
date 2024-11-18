@@ -165,7 +165,6 @@ class UserConfirmDeleteForm(forms.Form):
             raise forms.ValidationError("Le matricule ne correspond pas!")
         return matricule
 
-
 from django import forms
 from .models import UserProfile  # Assure-toi d'importer le bon modèle
 from django.db import models
