@@ -1,0 +1,58 @@
+{% load icon %}
+
+<div class="d-flex flex-row mb-4 align-items-center justify-content-between btn-group">
+
+    {% if can_add %}
+        {% if multi_add %}
+            <!-- Dropdown for multiple add options -->
+            <div class="dropdown me-2">
+                <a href="#" class="text-decoration-none text-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ajouter un nouvel élément" data-bs-toggle="popover" data-bs-content="Nouveau" data-bs-placement="top">
+                    {% icon "plus-square" height=option_size width=option_size %} Nouveau
+                </a>
+                <ul class="dropdown-menu">
+                    {% for link in links %}
+                        <li>
+                            <a class="dropdown-item" href="{{ link.url }}">
+                                {{ link.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <!-- Single add option as link -->
+            <div class="me-2">
+                <a href="{{ add_url }}" class="btn btn-outline-success" data-bs-toggle="tooltip" title="Ajouter un nouvel élément">
+                    {% icon "plus-square" height=option_size width=option_size %} Nouveau
+                    </a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if can_export %}
+        <!-- Export option as link -->
+        <div class="me-2">
+            <a href="/exporter" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Exporter des données">
+                {% icon "download" height=option_size width=option_size %} Exporter
+            </a>
+        </div>
+    {% endif %}
+
+    {% if can_print %}
+        <!-- Print option as link -->
+        <div class="me-2">
+            <a href="{{ print_url }}" class="text-decoration-none text-success" aria-label="Imprimer le contenu" data-bs-toggle="popover" data-bs-content="Imprimer" data-bs-placement="top">
+                {% icon "print" height=option_size width=option_size %} Imprimer
+            </a>
+        </div>
+    {% endif %}
+
+    {% if can_import %}
+        <!-- Import option as link -->
+        <div class="me-2">
+            <a href="/importer" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Importer des données">
+                {% icon "upload" height=option_size width=option_size %} Importer
+            </a>
+        </div>
+    {% endif %}
+</div>

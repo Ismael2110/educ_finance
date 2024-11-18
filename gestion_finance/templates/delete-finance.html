@@ -1,0 +1,66 @@
+{% extends "bases/base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_of }}</a></li>
+<li class="breadcrumb-item active" aria-current="page"><strong>Suppression - {{ what_of }}</strong></li>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card p-5">
+        <!-- En-tête avec le titre de la carte -->
+        <div class=""> 
+            <div class="card">
+                <div class="card-header">
+                    <h2 class=" text-dark fw-bold m-0">{{ card_title }}</h2>
+                </div>
+            </div>
+            
+        </div>
+        
+
+        <!-- Bouton retour en haut à droite -->
+        
+        <!-- Message d'avertissement et confirmation de suppression -->
+        <div class="card-body">
+            
+            <div class="d-flex justify-content-end ">
+                <a href="{{ list_url }}" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="Retour à la liste">
+                    <i class="fas fa-arrow-left me-2"></i> Retour
+                </a>
+            </div>
+
+            <div class="alert">
+                <p>{{ message }}</p>
+                {{ form.as_p }}
+                
+                <p>
+                    Êtes-vous sûr(e) de vouloir supprimer "{{ what_to }} : {{ what_of }}" ?<br>
+                    <span class="text-danger">Cette action est irréversible.</span>
+                </p>
+            </div>
+            
+
+            <!-- Formulaire de confirmation de suppression -->
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-lg btn-danger px-5 py-2" style="border-radius: 8px;">
+                    <i class="fas fa-trash-alt me-2"></i> Confirmer la suppression
+                </button>
+            </form>
+        </div>
+
+        <!-- Bas de la carte pour un espacement visuel agréable -->
+        <div class="p-3"></div>
+    </div>
+</div>
+
+<script>
+    // Initialiser le tooltip
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+{% endblock content %}

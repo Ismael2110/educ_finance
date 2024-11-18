@@ -1,0 +1,88 @@
+{% extends "bases/base.html" %}
+{% load static %}
+
+{% block stylesheet %}
+<!-- <link rel="stylesheet" href="{# static 'css/searchbar.css' #}"> -->
+{% endblock stylesheet %}
+
+
+{% block breadcrumb %}
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>{{card_title}}</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+        </ol>
+    </div>
+</div>
+{% endblock breadcrumb %}
+
+{% block title %} {{card_title}} {% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card pt-4">
+            <div class="d-flex flex-row mb-5 mt-4 justify-content-between">
+               
+        {% block more-info %}{% endblock more-info %}
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-row mb-5 justify-content-between">
+            <div>
+                {% include "components/searchbar.html" %}
+            </div>
+            <div>
+                {% block toolbar %}
+                {% include "components/toolbar.html" %}
+                {% block toolbar-plus %}{% endblock toolbar-plus %}
+                {% endblock toolbar %}
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="center">#</th>
+                        {% block table-headers %}{% endblock table-headers %}
+                        <th class="center"> Action </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in object_list %}
+                    <tr class="odd gradeX">
+                        <th scope="row" class="center">{{ forloop.counter }}</th>
+                        {% block table-rows %}{% endblock table-rows %}
+                        <td class="center">
+                            <div class="btn-group" role="group" aria-label="buttons group">
+                                {% block list-options %}
+
+                                {% block other-options %}
+                                {% endblock other-options %}
+
+                                {% include 'components/list-options.html' %}
+                                {% endblock list-options %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="20">
+                            Aucun enregistrement
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% block add-more %}{% endblock add-more %}
+    {% include "paginates.html" %}
+</div>
+{% endblock content %}

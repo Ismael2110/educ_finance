@@ -1,0 +1,26 @@
+
+{% extends "list-style.html" %}
+{% load icon %}
+{% load static %}
+
+{% block table-headers %}
+<th>Dossier</th>
+<th>Montant</th>
+<th>Date de paiement</th>
+<th>Référence</th>
+{% endblock table-headers %}
+
+{% block table-rows %}
+<td>{{ object.dossier }}</td>
+<td>{{ object.montant_total_a_verser }}</td>
+<td>{{ object.date_paiement }}</td>
+<td>{{ object.reference }}</td>
+{% comment %} <td>
+    <a href="{% url 'gestion_finance:paiement_detail' paiement.id %}">Détails</a>
+    {% if paiement.statut == 'en_attente' %}
+        <a href="{% url 'gestion_finance:valider_paiement' paiement.id %}">Valider</a>
+    {% endif %}
+</td> {% endcomment %}
+
+{% endblock table-rows %}
+

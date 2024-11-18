@@ -1,0 +1,131 @@
+{% extends 'bases/base.html' %}
+{% load icon %}
+
+{% block breadcrumb %}
+<div class="container pt-5">
+<li class="breadcrumb-item"><a href="{{list_url}}">{{list_of}}</a></li>
+</div>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<div class="container pt-3">
+    <div class="card">
+        <div class="my-2"> 
+            <div class="card">
+                <div class="card-header">
+                    <h2 class=" text-dark fw-bold m-0">{{ card_title }}</h2>
+                </div>
+            </div>
+            
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="d-flex flex-row mb-5 justify-content-between">
+                <div>
+                    {% include "components/searchbar.html" %}
+                </div>
+                <div>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+                    <div class="btn-group" role="group" aria-label="Basic outlined example" style="display: flex; gap: 10px;">
+                        <a href="{{ add_url }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-inverse-success" style="border: 2px solid #28a745; border-radius: 5px; padding: 10px 20px; background-color: #fff; color: #28a745;" 
+                                data-bs-toggle="tooltip" title="Ajouter un nouvel élément">
+                                <i class="fas fa-plus"></i> Nouveau
+                            </button>
+                        </a>
+
+                        <a href="/importer" style="text-decoration: none;">
+                            <button type="button" class="btn btn-inverse-primary" style="border: 2px solid #007bff; border-radius: 5px; padding: 10px 20px; background-color: #fff; color: #007bff;" 
+                                data-bs-toggle="tooltip" title="Importer des données">
+                                <i class="fas fa-arrow-down"></i> Importer
+                            </button>
+                        </a>
+                        
+                        <a href="/exporter" style="text-decoration: none;">
+                            <button type="button" class="btn btn-inverse-primary" style="border: 2px solid #007bff; border-radius: 5px; padding: 10px 20px; background-color: #fff; color: #007bff;" 
+                                data-bs-toggle="tooltip" title="Exporter des données">
+                                {% icon "download" height=option_size width=option_size %} Exporter
+                            </button>
+                        </a>
+                        
+                    </div>
+
+                    {% block toolbar %}
+                    {% include "components/toolbar.html" %}
+                    {% block toolbar-plus %}{% endblock toolbar-plus %}
+                    {% endblock toolbar %}
+                </div>
+            </div>
+            <div class="table-responsive p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="center">#</th>
+                                {% block table-headers %}{% endblock table-headers %}
+                                <th class="center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in object_list %}
+                            <tr class="odd gradeX">
+                                <th scope="row" class="center">{{ forloop.counter }}</th>
+                                {% block table-rows %}{% endblock table-rows %}
+                                <td class="center">
+                                    <div class="btn-group" role="group" aria-label="buttons group" style="background: transparent;">
+                                        {% block list-options %}
+                                    <a href="{% url info_url object.slug|default:object.id %}" class="icon-info me-2" 
+                                        data-bs-toggle="tooltip" title="Voir les détails" data-bs-container="body" data-bs-placement="top" 
+                                        style="border: none; background: none; font-size: 24px; color: #007bff; transition: color 0.3s;">
+                                        {% icon "info" %}
+                                    </a>
+                                    
+                            
+
+                                        <a href="{% url update_url object.slug|default:object.id %}" class="icon-success me-2" 
+                                        data-bs-toggle="tooltip" title="Modifier" data-bs-container="body" data-bs-placement="top" 
+                                        style="border: none; background: none; font-size: 24px; color: #28a745; transition: color 0.3s;">
+                                            {% icon "edit" %}
+                                        </a>
+                            
+
+                                        <a href="{% url delete_url object.slug|default:object.id %}" class="icon-danger" 
+                                        data-bs-toggle="tooltip" title="Supprimer" data-bs-container="body" data-bs-placement="top" 
+                                        style="border: none; background: none; font-size: 24px; color: #dc3545; transition: color 0.3s;">
+                                            {% icon "trash" %}
+                                        </a>
+                            
+
+                                        {% block other-options %}{% endblock other-options %}
+                                        {% include 'components/list-options.html' %}
+                                        {% endblock list-options %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="20">
+                                    Aucun enregistrement
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialiser les tooltips pour les éléments ayant l'attribut `data-bs-toggle="tooltip"`
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
+{% endblock content %}

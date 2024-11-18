@@ -1,0 +1,21 @@
+{% extends "dossier_trans.html" %}
+{% load icon %}
+{% load static %}
+
+{% block table-headers %}
+    <th>Code</th>
+    <th>Enseignant</th>
+    <th>Module</th>
+{% endblock table-headers %}
+
+{% block table-rows %}
+    <td>{{ object.code }}</td>
+    <td>{{ object.enseignant }}</td>
+    <td>{{ object.module }}</td>
+{% endblock table-rows %}
+
+{% block other-options %}
+    <a href="{% url info_url object.slug|default:object.id %}" class="btn btn-outline-info btn-sm " data-bs-toggle="tooltip" title="Voir les détails">
+        {% icon "info" %}
+    </a>
+{% endblock other-options %}

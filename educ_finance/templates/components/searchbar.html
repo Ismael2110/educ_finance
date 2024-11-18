@@ -1,0 +1,13 @@
+{% load icon %}
+
+{% if search_url %}
+<form class="d-flex mb-4 px-5 align-items-center justify-content-start" method="get" action="{{ search_url }}">
+    <!-- Champ de recherche avec uniquement l'icône -->
+    <div class="input-group" style="max-width: 400px;">
+        <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher" style="border-radius: 5px; border: 1px solid #007bff; height: 40px;">
+        <button class="btn btn-outline-secondary" type="submit" style="border-radius: 5px; background-color: #007bff; color: #fff; height: 40px;">
+            {% icon "search" height=option_size width=option_size %}
+        </button>
+    </div>
+</form>
+{% endif %}

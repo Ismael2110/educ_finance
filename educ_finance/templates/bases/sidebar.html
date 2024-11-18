@@ -1,0 +1,47 @@
+{% load icon %}
+
+<div class="quixnav">
+    <div class="quixnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li><a href="{% url 'index-view' %}" aria-expanded="false">{% icon "book" class="css-class" %}<span
+                class="nav-text"> Tableau de Bord</span></a></li>
+            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                        class="icon icon-app-store"></i><span class="nav-text">Gestion Administratif</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'gestion_administratif:dossier-list' %}">Dossiers Enseignants</a></li>
+                    <li><a href="#">Historique</a></li>
+                    <li><a href="#">Status des Dossiers</a></li>
+                    <li><a href="#">Rapport Académique</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                        class="icon icon-chart-bar-33"></i><span class="nav-text">Gestion Financière</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'gestion_finance:dossier-list' %}">Dossiers Transferés</a></li>
+                    <li><a href="{% url 'gestion_finance:paiement-list' %}">Paiement</a></li>
+                    <li><a href="#">Historique</a></li>
+                    <li><a href="#">Rapport Financier</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">{% icon "settings" class="css-class" %}<span class="nav-text"> Paramètres</span></a>
+                <ul aria-expanded="false">
+                    <li><a  href="{% url 'parameter:ufr-list' %}">Liste des Ufrs</a></li>
+                    <li><a href="{% url 'parameter:departement-list'%}">Liste des Départements</a></li>
+                    <li><a href="{% url 'parameter:filiere-list'%}">Liste des Filières</a></li>
+                    <li><a href="{% url 'parameter:module-list'%}">Liste des Modules</a></li>
+                    <li><a href="{% url 'parameter:enseignant-list'%}"> Liste des Enseignants</a></li>
+                    <li><a href="{% url 'parameter:typepaiement-list'%}"> Type de Paiement</a></li>
+                </ul>
+            </li>
+
+            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">{% icon "users" class="css-class" %}<span class="nav-text"> Gestion d'utilisateurs</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'auth:user-list' %}">Les utilisateurs</a></li>
+                    <li><a href="{% url 'auth:group-list' %}">Droit d'accès</a></li>
+                </ul>
+            </li>
+            
+    </div>
+
+
+</div>

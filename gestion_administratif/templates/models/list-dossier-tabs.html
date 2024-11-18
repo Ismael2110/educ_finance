@@ -1,0 +1,95 @@
+{% extends "bases/base.html" %}
+{% load static %}
+{% load icon %}
+
+{% block stylesheet %}
+<style>
+    /* Amélioration de l'apparence du tableau */
+    .table-hover tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+</style>
+{% endblock stylesheet %}
+
+{% block breadcrumb %}
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>{{ card_title }}</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+        </ol>
+    </div>
+</div>
+{% endblock breadcrumb %}
+
+{% block title %} {{ card_title }} {% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card pt-4">
+            <!-- Barre de recherche et outils alignés en haut -->
+            <div class="d-flex flex-row mb-5 mt-4 justify-content-between">
+                <div>
+                    {% include "components/searchbar.html" %}
+                </div>
+                <div>
+                    {% block toolbar %}
+                    {% include "components/toolbar.html" %}
+                    {% block toolbar-plus %}{% endblock toolbar-plus %}
+                    {% endblock toolbar %}
+                </div>
+            </div>
+
+            <!-- Tableau des dossiers validés uniquement -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="center">#</th>
+                            {% block table-headers-validated %}
+                                <th>Code</th>
+                                <th>Enseignant</th>
+                                <th>Module</th>
+                                <th>Statut</th>
+                            {% endblock table-headers-validated %}
+                            <th class="center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list_validated %}
+                        <tr class="odd gradeX">
+                            <th scope="row" class="center">{{ forloop.counter }}</th>
+                            {% block table-rows-validated %}
+                                <td>{{ object.code }}</td>
+                                <td>{{ object.enseignant }}</td>
+                                <td>{{ object.module }}</td>
+                                <td><span class="text-success fw-bold">Validé</span></td>
+                            {% endblock table-rows-validated %}
+                            <td class="center">
+                                <div class="btn-group" role="group" aria-label="buttons group">
+                                    <a href="{% url info_url object.slug|default:object.id %}" 
+                                       class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Voir les détails">
+                                        {% icon "info" %}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="20" class="text-center">Aucun dossier validé trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% block add-more %}{% endblock add-more %}
+{% endblock content %}

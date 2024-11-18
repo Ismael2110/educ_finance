@@ -1,0 +1,29 @@
+{% extends "list-style.html" %}
+{% load icon %}
+{% load static %}
+
+{% block table-headers %}
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>Email</th>
+    <th>Département associé</th>
+    <th>Statut</th> <!-- Nouvelle colonne pour indiquer si l'enseignant est vacataire -->
+    <th>Grade</th>
+    <th>Matricule</th> <!-- Colonne Matricule -->
+{% endblock table-headers %}
+
+{% block table-rows %}
+    <td>{{ object.nom }}</td>
+    <td>{{ object.prenom }}</td>
+    <td>{{ object.email }}</td>
+    <td>{{ object.departement }}</td>
+    <td>{% if object.is_vacataire %}Vacataire{% else %}Enseignant{% endif %}</td> <!-- Affiche "Vacataire" si is_vacataire est True -->
+    <td>{{ object.grade }}</td>
+    <td>
+        {% if not object.is_vacataire %}
+            {{ object.matricule }}
+        {% else %}
+            N/A
+        {% endif %}
+    </td> <!-- Affiche le matricule uniquement si l'enseignant n'est pas vacataire -->
+{% endblock table-rows %}

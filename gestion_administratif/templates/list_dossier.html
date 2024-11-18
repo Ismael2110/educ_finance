@@ -1,0 +1,46 @@
+{% extends "list-dossier.html" %}
+{% load icon %}
+{% load static %}
+
+
+
+{% block table-headers-en-cours %}
+    <th>Code</th>
+    <th>Enseignant</th>
+    <th>Module</th>
+{% endblock table-headers-en-cours %}
+
+{% block table-rows-en-cours %}
+<td>{{ object.code }}</td>
+<td>{{ object.enseignant }}</td>
+<td>{{ object.module }}</td>
+{% endblock table-rows-en-cours %}
+
+{% block other-options %}
+    <a href="{% url info_url object.slug|default:object.id %}" class="btn btn-outline-info btn-sm " data-bs-toggle="tooltip" title="Voir les détails">
+        {% icon "info" %}
+    </a>
+    <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success btn-sm " data-bs-toggle="tooltip" title="Modifier">
+        {% icon "edit" %}
+    </a>
+    <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="tooltip" title="Supprimer">
+        {% icon "trash" %}
+    </a>
+
+{% endblock other-options %}
+
+{% block table-headers-transferes %}
+    <th>Code</th>
+    <th>Enseignant</th>
+    <th>Module</th>
+{% endblock table-headers-transferes %}
+
+{% block table-rows-transferes %}
+    <td>{{ object.code }}</td>
+    <td>{{ object.enseignant }}</td>
+    <td>{{ object.module }}</td>
+    
+{% endblock table-rows-transferes %}
+
+{% block other-options-processed %}
+{% endblock other-options-processed %}

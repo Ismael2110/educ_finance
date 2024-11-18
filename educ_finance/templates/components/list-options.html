@@ -1,0 +1,69 @@
+{% load icon %}
+
+<style>
+/* Styles pour les icônes */
+.icon-link {
+    
+    transition: all 0.3s ease; /* Transition douce */
+    padding: 10px; /* Espacement autour de l'icône */
+    font-size: 1.2rem; /* Taille de l'icône */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/* Styles spécifiques aux icônes */
+.icon-info {
+    color: #17a2b8;
+    border: 2px solid #17a2b8;
+}
+.icon-info:hover {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.icon-success {
+    color: #28a745;
+    border: 2px solid #28a745;
+}
+.icon-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.icon-danger {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+.icon-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Effet de survol pour donner un léger effet de levée */
+.icon-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+</style>
+
+<!-- Icônes avec actions -->
+{% if can_detail %}
+<a href="{% url info_url object.slug|default:object.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Voir les détails">
+    {% icon "info" %}
+</a>
+{% endif %}
+
+{% if can_update %}
+<a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" title="Modifier">
+    {% icon "edit" %}
+</a>
+{% endif %}
+
+{% if can_delete %}
+<a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip" title="Supprimer">
+    {% icon "trash" %}
+</a>
+{% endif %}

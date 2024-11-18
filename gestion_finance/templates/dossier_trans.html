@@ -1,0 +1,114 @@
+{% extends 'bases/base.html' %}
+{% load icon %}
+
+{% block breadcrumb %}
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>{{ card_title }}</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+        </ol>
+    </div>
+</div>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<!-- Table des objets -->  
+<div class="row">
+    <div class="col-12">
+        <div class="card pt-4">
+            <div class="d-flex flex-row mb-5 mt-4 justify-content-between">
+                <div>
+                    {% include "components/searchbar.html" %}
+                </div>
+                <div>
+                    {% block toolbar %}
+                    {% include "components/toolbar.html" %}
+                    {% block toolbar-plus %}{% endblock toolbar-plus %}
+                    {% endblock toolbar %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example2" class="display table-font-large table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                {% block table-headers %}{% endblock table-headers %}
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in object_list %}
+                                <tr>
+                                    <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                                    {% block table-rows %}{% endblock table-rows %}
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" aria-label="Options">
+                                            {% block other-options %}{% endblock other-options %}
+                                            
+                                            <button type="button" 
+                                                    class="btn btn-md btn-outline-success" 
+                                                    data-bs-id="{{ object.id }}" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#transfert-{{ object.id }}">
+                                                Payer
+                                            </button>
+
+                                            <div class="modal fade" id="transfert-{{ object.id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ object.id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel-{{ object.id }}">Paiement de dossier</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="container">
+                                                                <section class="container mt-2">
+                                                                    <form method="GET" action="{% url 'gestion_finance:dossier-paiement' object.id %}" class="row g-3">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" id="id-{{ object.id }}" name="id" value="{{ object.id }}">
+                                                                        <div class="col-md-12 mt-2 mb-2 form-check">
+                                                                            <div class="row">
+                                                                                <h4 class="text-center justify-content">Êtes-vous sûr de vouloir effectuer le paiement : {{ object.id }} ?</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 mt-4 mb-2">
+                                                                            <button type="submit" class="btn btn-success">Confirmer</button>
+                                                                        </div>
+                                                                        <div class="col-md-6 mt-4 mb-2">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="20" class="text-center">Aucun enregistrement</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,17 @@
+<!-- upload.html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Télécharger un fichier</title>
+</head>
+<body>
+    <h1>Uploader un fichier</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }} <!-- Affiche le formulaire -->
+        <button type="submit">Envoyer le fichier</button>
+    </form>
+</body>
+</html>

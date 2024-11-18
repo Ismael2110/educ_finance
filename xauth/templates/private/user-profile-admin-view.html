@@ -1,0 +1,130 @@
+{% extends "bases/base.html" %}
+{% load static %}
+{% load icon %}
+
+{% block title %}Profil de {{ object.get_full_name }}{% endblock title %}
+
+{% block breadcrumb %}
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>{{card_title}}</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+        </ol>
+    </div>
+</div>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Profile Section -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="profile-header bg-primary text-white p-4 rounded-top">
+                        <h5 class="mb-0">{{object.get_full_name|title}}</h5>
+                        <small>{{object.grade.label|title}}</small>
+                    </div>
+                    <div class="mt-3">
+                        {% if object.photo %}
+                        <img src="{{object.photo.url}}" class="img-thumbnail rounded-circle" alt="Photo de profil" width="150">
+                        {% else %}
+                        <img src="{% static 'images/avatar1.png' %}" class="img-thumbnail rounded-circle" alt="Photo de profil" width="150">
+                        {% endif %}
+                    </div>
+                    <div class="mt-3">
+                        <p class="font-weight-bold">{{object.matricule|upper}}</p>
+                        <p><i class="bi bi-telephone"></i> {{object.phone}}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skills and Training Section -->
+            {% comment %} <div class="card mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <ul class="nav nav-pills card-header-pills justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#competences">Compétences</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#stages">Stages de Perfectionnement</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body tab-content">
+                    <div class="tab-pane fade show active" id="competences">
+                        <p>
+                            Administrateur de plateforme universitaire, en charge de la gestion et de la maintenance des systèmes numériques d'apprentissage, tout en offrant un support technique aux utilisateurs.
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="stages">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Lieu</th>
+                                    <th>Période</th>
+                                    <th>Formation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bamako</td>
+                                    <td>2022-2023</td>
+                                    <td><span class="badge bg-success">Tankiste</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Ankara</td>
+                                    <td>2022-2023</td>
+                                    <td><span class="badge bg-success">Pilote TB2</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Ouagadougou</td>
+                                    <td>2022-2023</td>
+                                    <td><span class="badge bg-success">Tireur d'élite</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+
+        <!-- Detailed Information Section -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white text-center">
+                    <h5>Informations Personnelles</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Nom:</strong> {{ object.first_name }}</li>
+                        <li class="list-group-item"><strong>Prénom(s):</strong> {{ object.last_name }}</li>
+                        <li class="list-group-item"><strong>Date de naissance:</strong> {{ object.birthdate|date:"SHORT_DATE_FORMAT" }}</li>
+                        <li class="list-group-item"><strong>Lieu de naissance:</strong> {{ object.birthplace }}</li>
+                        <li class="list-group-item"><strong>Matricule:</strong> {{ object.matricule }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-success text-white text-center">
+                    <h5>Contact</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Email:</strong> {{ object.email }}</li>
+                        <li class="list-group-item"><strong>Téléphone:</strong> {{ object.phone }}</li>
+                        <li class="list-group-item"><strong>Adresse:</strong> {{ object.address }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

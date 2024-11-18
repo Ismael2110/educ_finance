@@ -1,0 +1,16 @@
+
+{% extends "list-style.html" %}
+{% load icon %}
+{% load static %}
+
+{% block table-headers %}
+    <th>Code</th>
+    <th>Libellé</th>
+    <th>Sigle UFR</th>  {# Ajout d'une nouvelle colonne pour le sigle UFR #}
+{% endblock table-headers %}
+
+{% block table-rows %}
+    <td>{{ object.code }}</td>
+    <td>{{ object.label }}</td>
+    <td>{{ object.sigle }}</td> {# Affichage du sigle de l'UFR #}
+{% endblock table-rows %}
