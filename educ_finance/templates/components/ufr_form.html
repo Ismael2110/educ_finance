@@ -38,29 +38,25 @@
     <div class="col-12">
         <div class="card pt-4">
             <div class="d-flex flex-row mb-5 mt-4 justify-content-between">
-			</div>
 			
-			<django-formset endpoint="{{request.path}}" csrf-token="{{csrf_token}}"
-				withhold-feedback="errors warnings success">
-				{% if form_collection %}
-				{{form_collection}}
-				{% else %}
-				{% render_form form  %}
-				{% endif %}
-				<div class="form-actions mt-4">
-                    <!-- Bouton Sauvegarder simplifié -->
-                    <button type="submit" class="btn btn-primary"  df-click="spinner -> submit -> okay(2000) -> proceed !~ bummer(10000) -> scrollToError"  >Enregistrer</button>
-                    
-                    <!-- Bouton Enregistrer et Continuer simplifié -->
-                    <button class="btn btn-secondary" df-click="spinner -> submit -> okay(2000) -> proceed -> reload !~ bummer(10000)">Enregistrer et Continuer</button>
+                <django-formset endpoint="{{request.path}}" csrf-token="{{csrf_token}}" withhold-feedback="errors warnings success">
+                    {% if form_collection %}
+                    {{form_collection}}
+                    {% else %}
+                    {% render_form form  %}
+                    {% endif %}
+                    <div class="form-actions mt-4">
+                        <!-- Bouton Sauvegarder simplifié -->
+                        <button type="submit" class="btn btn-primary"  df-click="spinner->submit->okay(2000)->proceed !~ bummer(10000)-> scrollToError"  >Enregistrer</button>
+                        
+                        <!-- Bouton Enregistrer et Continuer simplifié -->
+                        <button class="btn btn-secondary" df-click="spinner -> submit -> okay(2000) -> proceed -> reload !~ bummer(10000)">Enregistrer et Continuer</button>
 
-            
-                    <!-- Bouton Annuler simplifié -->
-                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-danger">Annuler</a>
-                </div>
-				
-				
-				</django-formset>
+                
+                        <!-- Bouton Annuler simplifié -->
+                        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-danger">Annuler</a>
+                    </div>
+                </django-formset>
 			</div>
 		</div>
 	</div>

@@ -54,15 +54,21 @@
                                     {% block table-rows %}{% endblock table-rows %}
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Options">
+                                            {% if can_detail %}
                                             <a href="{% url info_url object.slug|default:object.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Voir les détails">
                                                 {% icon "info" %}
                                             </a>
+                                            {% endif %}
+                                            {% if can_update %}
                                             <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" title="Modifier">
                                                 {% icon "edit" %}
                                             </a>
+                                            {% endif %}
+                                            {% if can_delete %}
                                             <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip" title="Supprimer">
                                                 {% icon "trash" %}
                                             </a>
+                                            {% endif %}
                                             {% block other-options %}{% endblock other-options %}
                                         </div>
                                     </td>

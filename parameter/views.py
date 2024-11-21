@@ -21,7 +21,7 @@ class UfrListView(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["can_delete"] = False
+        context["can_delete"] = True
         context["can_add"] = True
         context["add_url"] = reverse_lazy("parameter:ufr-create") 
         context["list_of"] = 'Liste des UFR'
@@ -87,7 +87,7 @@ class DepartementListView(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["can_delete"] = False
+        context["can_delete"] = True
 
         return context
 
@@ -142,7 +142,7 @@ class FiliereListView(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["can_delete"] = False
+        context["can_delete"] = True
 
         return context
 
@@ -196,7 +196,7 @@ class ModuleListView(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["can_delete"] = False
+        context["can_delete"] = True
 
         return context
 
@@ -249,7 +249,7 @@ class EnseignantListView(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["can_delete"] = False
+        context["can_delete"] = True
 
         return context
 
@@ -304,7 +304,7 @@ class TypePaiementListView(CustomListView):
 
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
-            context["can_delete"] = False
+            context["can_delete"] = True
 
             return context
         

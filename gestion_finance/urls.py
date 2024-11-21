@@ -7,6 +7,7 @@ from . import views
 app_name = 'gestion_finance'
 
 urlpatterns = [
+    path('other/valider/', views.ValiderPaiement, name='valider'),
     path('paiements/list', views.PaiementListView.as_view(), name='paiement-list'),
     path('paiements/create/', views.PaiementCreateView.as_view(), name='paiement-create'),
     path('paiements/<uuid:pk>/', views.PaiementDetailView.as_view(), name='paiement-detail'),

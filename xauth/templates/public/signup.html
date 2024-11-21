@@ -9,26 +9,126 @@
 <link href="{% static 'formset/css/bootstrap5-extra.css' %}" rel="stylesheet">
 <script type="module" src="{% static 'formset/js/django-formset.js' %}" nonce="{{request.csp_nonce}}"></script>
 {{form.media.css}}
+<style>
+    body {
+        background: url('{% static "images/eno copy.jpg" %}') no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .login-container {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        padding: 30px 40px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .login-title {
+        font-size: 1.8rem;
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: #6a11cb;
+        margin-bottom: 30px;
+    }
+
+    .input-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .input-container input {
+        width: 100%;
+        padding: 10px 10px 10px 0;
+        font-size: 1rem;
+        border: none;
+        border-bottom: 2px solid #ddd;
+        background: transparent;
+        color: #333;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .input-container input:focus, .input-container input:not(:placeholder-shown) {
+        border-color: #2575fc;
+    }
+
+    .input-label {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        color: #aaa;
+        font-size: 1rem;
+        pointer-events: none;
+        transition: 0.2s ease;
+    }
+
+    .input-container input:focus + .input-label,
+    .input-container input:not(:placeholder-shown) + .input-label {
+        top: -20px;
+        font-size: 0.8rem;
+        color: #2575fc;
+    }
+
+    .btn-primary {
+        background-color: #2575fc;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        width: 100%;
+        transition: background-color 0.3s;
+        margin-top: 20px;
+    }
+
+    .btn-primary:hover {
+        background-color: #6a11cb;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #2575fc;
+    }
+</style>
 {% endblock stylesheet %}
 
 
 {% block content %}
-<django-formset class="login100-form validate-form" endpoint="{{request.path}}" csrf-token="{{csrf_token}}">
-   {% comment %}  <span class="login100-form-title p-b-10">
-        <img src="{% static 'images/burkina-faso.jpg' %}" height="50%" width="50%" alt="armorie">
-    </span> {% endcomment %}
-    <span class="login100-form-title p-b-30">
-        Activation de compte
-    </span>
-    {% render_form form "bootstrap" field_classes="mb-2 col-12" form_classes="row" label_classes="form-label" %}
-    <div class="container-login100-form-btn btn-bg-niss col-12 p-t-5 p-b-10">
-        {% include 'components/formset-button.html' with label="ACTIVER MON COMPTE" color="btn-success"  process="spinner -> submit -> okay(2000) -> proceed !~ bummer(10000) -> scrollToError" %}
-    </div>
-    <div class="text-center p-t-45 p-b-20">
-        <a href="{% url 'user-login' %}" class="txt2"> J'ai un compte actif </a>
-
-    </div>
-</django-formset>
+<div class="login-container">
+    <django-formset class="login100-form validate-form" endpoint="{{request.path}}" csrf-token="{{csrf_token}}">
+        {% comment %} <span class="login100-form-title p-b-10">
+            <img src="{% static 'images/burkina-faso.jpg' %}" height="50%" width="50%" alt="armorie">
+        </span> {% endcomment %}
+        <span class="login100-form-title p-b-30">
+            Activation de compte
+        </span>
+        {% render_form form "bootstrap" field_classes="mb-2 col-12" form_classes="row" label_classes="form-label" %}
+        <div class="container-login100-form-btn btn-bg-niss col-12 p-t-5 p-b-10">
+            {% include 'components/formset-button.html' with label="VALIDER" color="btn-success" process="spinner -> submit -> okay(2000) -> proceed !~ bummer(10000) -> scrollToError" %}
+        </div>
+        <div class="text-center p-t-45 p-b-20">
+            <a href="{% url 'user-login' %}" class="txt2"> J'ai un compte actif </a>
+    
+        </div>
+    </django-formset>
+</div>
 {% endblock content %}
 
 {% block javascript %}

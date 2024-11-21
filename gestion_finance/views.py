@@ -17,6 +17,7 @@ from django.views import View
 from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from parameter.models import TypePaiement
 
 
 # Create your views here.
@@ -26,11 +27,12 @@ class PaiementListView(CustomListView):
     model = Paiement
     name = "paiement"
     template_name = "list-finance.html"
-
+ 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["can_delete"] = False
-        context["can_add"] = True
+        context["can_add"] = False
+        context["can_update"] = False
         context["add_url"] = reverse_lazy("gestion_finance:paiement-create")
         return context
 
@@ -84,24 +86,58 @@ class PaiementDeleteView(CustomDeleteView):
 class DossierValideListView(CustomListView):
     model = Dossier
     name = "dossier"
-    template_name = "transfer.html"
-    
-    def get_queryset(self):
-        return Dossier.objects.filter( is_tranfered = True)
+    template_name = "list-finance1.html"
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print('azertyui')
         context["can_delete"] = False
         context["can_add"] = False
         context["can_import"] = False
         context["can_update"] = False
         context["can_delete"] = False
-        
-        
+        context["object_list_en_cours"] = Dossier.objects.filter(is_tranfered =True, is_payed = False)
+        context["object_list_transferes"] = Paiement.objects.filter(is_tranche=True, montant_restant_a_verser__gt=0)
+        print(context["object_list_transferes"])
+        context["object_list_solde"] = Paiement.objects.filter(montant_restant_a_verser=0)
+        context["type_paiement_list"] = TypePaiement.objects.all() 
         return context
     
     
+# def DossierPaiementCreateView(View):
+#     def post(self, form):
+#         id = self.kwargs.get("pk")
+#         dossier = get_object_or_404(Dossier, pk=id)
+#         form.instance.dossier = dossier
+#         return super().form_valid(form)
+
+
+def ValiderPaiement(request):
+    reference = request.POST.get("reference")
+    montant_total_a_verser = request.POST.get("montant_total_a_verser")
+    montant_verser = request.POST.get("montant_verser")
+    date_paiement = request.POST.get("date_paiement")
+    type_paiement = request.POST.get("type_paiement")
+    dossier_id = request.POST.get("dossier_id")
+
+    dossier = Dossier.objects.filter(id = dossier_id).first()
+    type = TypePaiement.objects.filter(id = type_paiement).first()
+    
+    if not (reference and montant_total_a_verser and montant_verser and date_paiement and type_paiement):
+        return redirect("gestion_finance:paiement-list")
+    dossier.is_payed = True
+    dossier.save()
+    paiement = Paiement.objects.create(
+        dossier=dossier,
+        reference=reference,
+        montant_total_a_verser=float(montant_total_a_verser),
+        montant_verser=float(montant_verser),
+        date_paiement=date_paiement,
+        type_paiement=type,
+        )
+    return redirect("gestion_finance:paiement-list")
+
+
 class DossierPaiementCreateView(CustomCreateView):
     model = Paiement
     form_class = PaiementForm
@@ -110,5 +146,22 @@ class DossierPaiementCreateView(CustomCreateView):
     def form_valid(self, form):
         id = self.kwargs.get("pk")
         dossier = get_object_or_404(Dossier, pk=id)
+        is_tranche = form.cleaned_data['is_tranche']
+        print(is_tranche)
+        if is_tranche is 'm' :
+            is_tranche = False
+            form.instance.montant_restant_a_verser = 0 
+            form.instance.montant_verser =  form.cleaned_data['montant_total_a_verser']
+        elif is_tranche is 'f':
+            is_tranche = True
+            form.instance.montant_restant_a_verser = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
+            form.instance.montant_verser =  form.cleaned_data['montant_verser']
+            
+        form.instance.is_tranche = is_tranche
         form.instance.dossier = dossier
         return super().form_valid(form)
+
+
+    
+    
+    
