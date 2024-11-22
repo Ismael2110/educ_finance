@@ -1,0 +1,62 @@
+{% extends "bases/base.html" %}
+{% load icon %}
+
+{% block breadcrumb %}
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>Liste des dossiers transférés</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Dossiers transférés</a></li>
+        </ol>
+    </div>
+</div>
+{% endblock breadcrumb %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card pt-4">
+            <div class="card-body">
+                <div class="d-flex flex-row mb-4 justify-content-between">
+                    <div>
+                        {% include "components/searchbar.html" %}
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                {% block table-headers %}{% endblock table-headers %}
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in object_list %}
+                            <tr>
+                                <td class="text-center">{{ forloop.counter }}</td>
+                                {% block table-rows %}{% endblock table-rows %}
+                                <td class="text-center">
+                                    {% block list-options %}{% endblock list-options %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">Aucun dossier transféré trouvé.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

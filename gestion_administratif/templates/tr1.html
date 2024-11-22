@@ -1,0 +1,21 @@
+{% extends "dossier_tr.html" %}
+{% load icon %}
+
+{% block table-headers %}
+<th>Nom du dossier</th>
+<th>Statut</th>
+{% endblock table-headers %}
+
+{% block table-rows %}
+<td>{{ object.enseignant }}</td>
+<td>{{ object.statut }}</td>
+{% for paiement in object.paiement_set.all %}
+    <td>{{ paiement.status }}</td>
+{% endfor %}
+{% endblock table-rows %}
+
+{% block list-options %}
+
+{% endblock list-options %}
+
+

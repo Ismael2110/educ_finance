@@ -147,7 +147,6 @@ class DossierPaiementCreateView(CustomCreateView):
         id = self.kwargs.get("pk")
         dossier = get_object_or_404(Dossier, pk=id)
         is_tranche = form.cleaned_data['is_tranche']
-        print(is_tranche)
         if is_tranche is 'm' :
             is_tranche = False
             form.instance.montant_restant_a_verser = 0 
@@ -156,7 +155,8 @@ class DossierPaiementCreateView(CustomCreateView):
             is_tranche = True
             form.instance.montant_restant_a_verser = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
             form.instance.montant_verser =  form.cleaned_data['montant_verser']
-            
+        dossier.is_payed = True
+        dossier.save()
         form.instance.is_tranche = is_tranche
         form.instance.dossier = dossier
         return super().form_valid(form)

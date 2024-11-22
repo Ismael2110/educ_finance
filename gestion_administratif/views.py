@@ -7,6 +7,7 @@ from educ_finance.views import (
     CustomDetailView,
     CustomListView,
     CustomUpdateView,
+    
 )
 from formset.views import FileUploadMixin
 from gestion_administratif.models import Dossier
@@ -150,3 +151,25 @@ class Transfert(View):
         dossier.save()
         messages.success(request, "Dossier transférer avec succès")
         return redirect("gestion_administratif:dossier-list")
+
+class HistoriqueDossier(CustomListView):
+    model = Dossier
+    name = "dossier"
+    template_name = "tr1.html"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_tranfered=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Désactivation ou activation des actions selon vos besoins
+        # context["can_delete"] = False
+        # context["can_add"] = False
+        # context["can_update"] = False
+        # context["can_import"] = False
+
+        # Ajouter l'URL d'ajout si activé
+        context["add_url"] = reverse_lazy("gestion_administratif:dossier-create") if context.get("can_add") else None
+
+        return context

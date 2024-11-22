@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from gestion_administratif.views import HistoriqueDossier
 
 app_name = "gestion_administratif"
 
@@ -11,6 +12,7 @@ urlpatterns = [
     path('dossiers/<uuid:pk>/delete/', views.DossierDeleteView.as_view(), name='dossier-delete'),
     path('dossier/<uuid:pk>/<str:action>/', views.valider_ou_rejeter_dossier, name='valider_ou_rejeter_dossier'),
     path('transfert/<uuid:pk>/', views.Transfert.as_view(), name='transfert-dossier'),
+    path('dossiers-transferes/', HistoriqueDossier.as_view(), name='historique-dossier'),
 ]
 
 # urls.py

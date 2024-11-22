@@ -25,11 +25,13 @@ class Paiement(CommonAbstractModel):
         null=True
     )
     dossier = models.ForeignKey(
-        'gestion_administratif.dossier', 
+        'gestion_administratif.Dossier', 
         on_delete=models.CASCADE, 
         verbose_name="Dossier enseignant", 
         help_text="Dossier de l'enseignant associé", 
-        null=True
+        null=True,
+        related_name="paiements"
+        
     )
     montant_total_a_verser = models.DecimalField(
         max_digits=10, 
