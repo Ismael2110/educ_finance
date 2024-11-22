@@ -27,36 +27,82 @@
                         {% include "components/searchbar.html" %}
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                {% block table-headers %}{% endblock table-headers %}
-                                <th class="text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for object in object_list %}
-                            <tr>
-                                <td class="text-center">{{ forloop.counter }}</td>
-                                {% block table-rows %}{% endblock table-rows %}
-                                <td class="text-center">
-                                    {% block list-options %}{% endblock list-options %}
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-center">Aucun dossier transféré trouvé.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    
+                
+                <!-- Début de l'accordéon pour afficher les dossiers -->
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    {% for object in object_list %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header d-flex align-items-center" id="flush-heading{{ object.id }}">
+                                <!-- Bouton de l'accordéon -->
+                                <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ object.id }}" aria-expanded="false" aria-controls="flush-collapse{{ object.id }}">
+                                    <span class="flex-grow-1">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                        {{object.code}}
+                                            </div>
+                                            <div class="col-4">
+                                                        {{object.enseignant}}
+                                            </div>
+                                            <div class="col-4">
+                                                {% if object.status == 'initie' %}
+                                                <span class="badge badge-secondary ms-2">Initié</span>
+                                            {% elif object.status == 'partiellement payé' %}
+                                                <span class="badge badge-info ms-2">Partiellement payé</span>
+                                            {% elif object.status == 'soldé' %}
+                                                <span class="badge badge-success ms-2">Soldé</span>
+                                            {% else %}
+                                                <span class="badge badge-light ms-2">Inconnu</span>
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                         <!-- Nom du dossier -->
+                                        <!-- Badge du statut juste après le nom -->
+                                        
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="flush-collapse{{ object.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ object.id }}" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <!-- Détails du dossier -->
+                                    <table class="details-table w-100">
+                                        <tbody>
+                                            {% for paiement in object.paiement_set.all %}
+                                                <tr class="d-flex justify-content-between align-items-center">
+                                                    <td>
+                                                        <span><strong>Référence :</strong> {{ paiement.reference }}</span> |
+                                                        <span><strong>Montant :</strong> {{ paiement.montant_verser }}</span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <!-- Bouton pour voir les détails -->
+                                                        <a href="{% url 'gestion_finance:paiement-detail' paiement.pk %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" title="Voir les détails">
+                                                            {% icon "info" %}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="2">Aucun paiement associé</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>Aucun dossier transféré trouvé.</p>
+                    {% endfor %}
                 </div>
+                
+                
+                
+                <!-- Fin de l'accordéon -->
+                
             </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}
+
+
+

@@ -5,10 +5,12 @@
 
 {% block table-headers-en-cours %}
 <th>Dossier</th>
+<th>Code</th>
 {% endblock table-headers-en-cours %}
 
 {% block table-rows-en-cours %}
 <td>{{ object.enseignant }}</td>
+<td>{{ object.code }}</td>
 {% endblock table-rows-en-cours %}
 
 {% block list-options-en-cours %}
@@ -55,17 +57,52 @@
 <th>Dossier</th>
 <th>Montant</th>
 <th>Reste</th>
-<th>Date de paiement</th>
+
 {% endblock table-headers-payes%}
 
 {% block table-rows-payes%}
-<td>{{ object.dossier }}</td>
-<td>{{ object.montant_total_a_verser }}</td>
-<td>{{ object.montant_restant_a_verser }}</td>
-<td>{{ object.date_paiement }}</td>
+<td>{{ object.enseignant }}</td>
+<td>{{ object.montant }}</td>
+<td>{{ object.reste_a_payer }}</td>
+
 {% endblock table-rows-payes%}
 
 {% block list-options-payes %}
+<button type="button" class="btn btn-outline-success" data-bs-id="{{ object.id }}" data-bs-toggle="modal" data-bs-target="#transfert1-{{ object.id }}">
+    {% icon "arrow-right" height="16px" width="16px" %} Payer
+</button>
+<!-- Modal Transfert -->
+<div class="modal fade" id="transfert1-{{ object.id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ object.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel-{{ object.id }}">Paiement de dossier</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <section class="container mt-2">
+                        <form method="GET" action="{% url 'gestion_finance:dossier-paiement' object.id %}" class="row g-3">
+                            {% csrf_token %}
+                            <input type="hidden" id="id-{{ object.id }}" name="id" value="{{ object.id }}">
+                            <div class="col-md-12 mt-2 mb-2 form-check">
+                                <div class="row">
+                                    <h4 class="text-center justify-content">Êtes-vous sûr de vouloir effectuer le reste paiement : {{ object.id }} ?</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-4 mb-2">
+                                <button type="submit" class="btn btn-success">Confirmer</button>
+                            </div>
+                            <div class="col-md-6 mt-4 mb-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock list-options-payes %}
 
 {% block table-headers-solde %}

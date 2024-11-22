@@ -136,15 +136,12 @@ def my_view(request):
     
 class Transfert(View):
     def post(self, request, pk=None):
-        print('okkk')
-        # Récupérer l'ID soit via l'URL, soit via le POST
         object_id = pk or request.POST.get('id')
         if not object_id:
             messages.error(request, "objet non trouvé")
             return redirect("gestion_administratif:dossier-list")  # Gestion des erreurs, redirection si ID manquant
 
         dossier = get_object_or_404(Dossier, id=object_id)
-        print(dossier)
 
         # Mettre à jour l'état du dossier
         dossier.is_tranfered = True
@@ -162,14 +159,6 @@ class HistoriqueDossier(CustomListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Désactivation ou activation des actions selon vos besoins
-        # context["can_delete"] = False
-        # context["can_add"] = False
-        # context["can_update"] = False
-        # context["can_import"] = False
-
-        # Ajouter l'URL d'ajout si activé
         context["add_url"] = reverse_lazy("gestion_administratif:dossier-create") if context.get("can_add") else None
 
         return context

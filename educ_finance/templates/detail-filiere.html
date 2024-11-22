@@ -5,56 +5,87 @@
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static 'css/scroll_card2.css' %}">
 <style>
-    /* Amélioration de la carte */
+    /* Amélioration générale des cartes */
     .card {
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         background-color: #ffffff;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 1.5rem;
     }
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* En-tête de la carte */
+    /* En-tête principale */
     .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-        padding: 1rem;
+        background-color: #007bff;
+        color: #fff;
         font-weight: bold;
-        font-size: 1.25rem;
+        padding: 1.5rem;
+        font-size: 1.5rem;
         text-align: center;
-        color: #333;
     }
-    
+
     /* Contenu de la carte */
     .card-body {
         padding: 1.5rem;
     }
 
-    /* Table */
-    .table-responsive {
+    /* Table des détails */
+    .details-table {
+        width: 100%;
+        margin-top: 1rem;
+        border-collapse: collapse;
+    }
+    .details-table th, .details-table td {
+        border: 1px solid #dee2e6;
+        padding: 0.75rem;
+        text-align: left;
+    }
+    .details-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: #444;
+    }
+    .details-table td {
+        color: #555;
+    }
+
+    /* Section des boutons alignés face à face */
+    .btn-group-side {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-top: 1rem;
     }
 
-    /* Typographie et couleurs */
+    .btn-group-side .btn {
+        width: auto;
+    }
+
+    .btn-group-back {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Typographie */
     h2, .card-title {
-        font-size: 1.75rem;
-        color: #444;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
     }
 
-    /* Styles du bouton de retour */
-    .btn-back {
-        float: right;
-        margin-bottom: 1rem;
-    }
-
-    /* Adaptation mobile */
+    /* Adaptation pour les écrans mobiles */
     @media (max-width: 768px) {
-        .card {
-            margin-bottom: 1rem;
+        .btn-group-side {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .btn-group-side .btn {
+            width: auto;
         }
     }
 </style>
@@ -79,58 +110,61 @@
 {% block title %}{{ card_title }}{% endblock title %}
 
 {% block content %}
-
-
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-12">
-        <div class="card pt-4">
-            <div class="d-flex flex-row mb-5 mt-4 justify-content-end">
-                <a href="{% url list_url %}" class="btn btn-outline-secondary btn-sm btn-back">
-                    {% icon "corner-up-left" height="16px" width="16px" %} Retour
-                </a>
+        <div class="row">
+            <!-- Cadre contenant les détails, prenant 6 colonnes -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        {{ object.label }}
+                    </div>
+                    <div class="card-body">
+                        <table class="details-table">
+                            <tbody>
+                                <tr>
+                                    <th>Code</th>
+                                    <td>{{ object.code }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Libellé</th>
+                                    <td>{{ object.label }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td>{{ object.description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre de modules</th>
+                                    <td>{{ object.module_count }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Responsable</th>
+                                    <td>{{ object.manager }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-                <div class="row w-100">
-                    <!-- Section Titre et Description -->
-                    <div class="col-md-5 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">{{ object.label }}</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{% if object.image_url %}{{ object.image_url }}{% else %}{% static 'images/avatar1.png' %}{% endif %}" 
-                                     alt="Image description" class="img-fluid" style="max-width: 70%; height: auto; border-radius: 10px;">
-                            </div>
-                        </div>
-                    </div>
+            
+            <!-- Section des boutons -->
+            <div class="col-md-6">
+                <!-- Bouton Retour -->
+                <div class="btn-group-back">
+                    <a href="javascript:history.back()" class="btn btn-outline-primary">
+                        {% icon "arrow-left" height="16px" width="16px" %} Retour
+                    </a>
+                </div>
 
-                    <!-- Section Détails et Options -->
-                    <div class="col-md-7 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Options / Détails</h5>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr><th class="table-light">Code</th><td>{{ object.code }}</td></tr>
-                                        <tr><th class="table-light">Libellé</th><td>{{ object.label }}</td></tr>
-                                        <tr><th class="table-light">Description</th><td>{{ object.description }}</td></tr>
-                                    </tbody>
-                                </table>
-
-                                <!-- Boutons d'Action -->
-                                <div class="d-flex justify-content-between mt-4">
-                                    <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
-                                        {% icon "edit" height="16px" width="16px" %} Modifier
-                                    </a>
-                                    <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
-                                        {% icon "trash" height="16px" width="16px" %} Supprimer
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                <!-- Boutons Modifier et Supprimer -->
+                <div class="btn-group-side">
+                    <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
+                        {% icon "edit" height="16px" width="16px" %} Modifier
+                    </a>
+                    <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
+                        {% icon "trash" height="16px" width="16px" %} Supprimer
+                    </a>
                 </div>
             </div>
         </div>

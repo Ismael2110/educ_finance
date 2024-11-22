@@ -35,6 +35,29 @@ class Dossier(CommonAbstractModel):
     is_valided = models.BooleanField(null=True, help_text="Indique si le dossier est validé")
     is_payed = models.BooleanField(default=False, help_text="Indique si le dossier est payé")
     is_tranfered = models.BooleanField(default=False, help_text="Indique si le dossier est transféré")
+    
+    STATUS_CHOICES = [
+        ('initie', 'Initié'),
+        ('partiellement payé', 'Partiellement payé'),
+        ('soldé', 'Soldé'),
+    ]
+    
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='initie',
+        verbose_name="Statut"
+    )
+    
+    montant = models.IntegerField(
+        default=0, 
+        verbose_name = "Montant",
+    )
+    
+    reste_a_payer = models.IntegerField(
+        default=0, 
+        verbose_name = "Reste à payer",
+    )
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -71,3 +94,4 @@ class Dossier(CommonAbstractModel):
     def rejeter_dossier(self):
         self.is_valided = False
         self.save()  # Sauvegarde de l'état mis à jour dans la base de données
+    

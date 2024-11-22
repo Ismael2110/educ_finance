@@ -11,7 +11,7 @@ from educ_finance.views import (
     CustomUpdateView,
 )
 from formset.views import FileUploadMixin
-from .forms import PaiementForm
+from .forms import PaiementForm, PaiementPartielleForm
 from .models import Paiement
 from django.views import View
 from django.shortcuts import get_object_or_404, redirect
@@ -96,8 +96,8 @@ class DossierValideListView(CustomListView):
         context["can_import"] = False
         context["can_update"] = False
         context["can_delete"] = False
-        context["object_list_en_cours"] = Dossier.objects.filter(is_tranfered =True, is_payed = False)
-        context["object_list_transferes"] = Paiement.objects.filter(is_tranche=True, montant_restant_a_verser__gt=0)
+        context["object_list_en_cours"] = Dossier.objects.filter(is_tranfered =True, status = "initie")
+        context["object_list_transferes"] = Dossier.objects.filter(status = "partiellement payé")
         print(context["object_list_transferes"])
         context["object_list_solde"] = Paiement.objects.filter(montant_restant_a_verser=0)
         context["type_paiement_list"] = TypePaiement.objects.all() 
@@ -125,6 +125,20 @@ def ValiderPaiement(request):
     
     if not (reference and montant_total_a_verser and montant_verser and date_paiement and type_paiement):
         return redirect("gestion_finance:paiement-list")
+    if dossier.status == "initie":
+        paiement = Paiement.objects.create(
+        dossier=dossier,
+        reference=reference,
+        montant_total_a_verser=float(montant_total_a_verser),
+        montant_verser=float(montant_verser),
+        date_paiement=date_paiement,
+        type_paiement=type,
+        )
+        dossier.montant = montant_total_a_verser
+        
+    elif dossier.status == "partiellement payé":
+        pass
+    
     dossier.is_payed = True
     dossier.save()
     paiement = Paiement.objects.create(
@@ -139,22 +153,52 @@ def ValiderPaiement(request):
 
 
 class DossierPaiementCreateView(CustomCreateView):
+    print(2)
     model = Paiement
     form_class = PaiementForm
     name = "paiement"
     success_url = reverse_lazy("gestion_finance:paiement-list")
+    
+    def get_form_class(self):
+        id = self.kwargs.get("pk")
+        dossier = get_object_or_404(Dossier, pk=id)
+        print(dossier.status)
+        if dossier.status == "initie":
+            return PaiementForm
+        elif dossier.status == "partiellement payé":
+            return PaiementPartielleForm
+    
     def form_valid(self, form):
         id = self.kwargs.get("pk")
         dossier = get_object_or_404(Dossier, pk=id)
         is_tranche = form.cleaned_data['is_tranche']
-        if is_tranche is 'm' :
-            is_tranche = False
-            form.instance.montant_restant_a_verser = 0 
-            form.instance.montant_verser =  form.cleaned_data['montant_total_a_verser']
-        elif is_tranche is 'f':
-            is_tranche = True
-            form.instance.montant_restant_a_verser = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
-            form.instance.montant_verser =  form.cleaned_data['montant_verser']
+        
+        if dossier.status == "initie":
+            if is_tranche is 'm' :
+                is_tranche = False
+                form.instance.montant_restant_a_verser = 0 
+                form.instance.montant_verser =  form.cleaned_data['montant_total_a_verser']
+                dossier.montant = form.cleaned_data['montant_total_a_verser']
+                dossier.status = "soldé"
+            elif is_tranche is 'f':
+                is_tranche = True
+                form.instance.montant_restant_a_verser = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
+                form.instance.montant_verser =  form.cleaned_data['montant_verser']
+                dossier.montant = form.cleaned_data['montant_total_a_verser']
+                dossier.reste_a_payer = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
+                dossier.status = "partiellement payé"
+            dossier.montant = form.cleaned_data['montant_total_a_verser']
+        elif dossier.status == "partiellement payé":
+            if is_tranche is 'm' :
+                is_tranche = False
+                form.instance.montant_restant_a_verser = 0 
+                form.instance.montant_verser =  form.cleaned_data['montant_total_a_verser']
+            elif is_tranche is 'f':
+                is_tranche = True
+                form.instance.montant_restant_a_verser = form.cleaned_data['montant_total_a_verser'] - form.cleaned_data['montant_verser']
+                form.instance.montant_verser =  form.cleaned_data['montant_verser']
+                dossier.montant = dossier.reste_a_payer - form.cleaned_data['montant_verser']
+                dossier.status = "soldé"
         dossier.is_payed = True
         dossier.save()
         form.instance.is_tranche = is_tranche
