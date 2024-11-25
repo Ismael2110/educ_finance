@@ -154,6 +154,10 @@
                                                         {% icon "check-circle" height="16px" width="16px" %} Valider
                                                     </button>
                                                 </a>
+                                                <a href="{% url 'gestion_finance:generer-recu' paiement.id %}" class="btn btn-outline-secondary">
+                                                    Générer Reçu
+                                                </a>
+                                                
                                                 {% endblock list-options-solde %}
                                             </div>
                                         </td>

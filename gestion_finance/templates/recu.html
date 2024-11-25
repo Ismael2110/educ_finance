@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 24px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reçu de Paiement</h1>
+        <p>Date : {{ paiement.date_paiement }}</p>
+    </div>
+    <table>
+        <tr>
+            <th>Référence</th>
+            <td>{{ paiement.reference }}</td>
+        </tr>
+        <tr>
+            <th>Montant Total</th>
+            <td>{{ paiement.montant_total_a_verser }} F CFA</td>
+        </tr>
+        <tr>
+            <th>Montant Versé</th>
+            <td>{{ paiement.montant_verser }} F CFA</td>
+        </tr>
+        <tr>
+            <th>Type de Paiement</th>
+            <td>{{ paiement.type_paiement.nom }}</td>
+        </tr>
+        <tr>
+            <th>Reste à Payer</th>
+            <td>{{ paiement.montant_restant_a_verser }} F CFA</td>
+        </tr>
+    </table>
+    <div class="footer">
+        <p>Merci pour votre paiement !</p>
+    </div>
+</body>
+</html>

@@ -19,6 +19,12 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from parameter.models import TypePaiement
 
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django_weasyprint import WeasyTemplateResponseMixin
+import tempfile
+
+
 
 # Create your views here.
 #finis
@@ -206,6 +212,28 @@ class DossierPaiementCreateView(CustomCreateView):
         return super().form_valid(form)
 
 
+
+def generer_recu(request, paiement_id):
+    # Récupérer le paiement correspondant
+    from .models import Paiement  # Importez vos modèles
+    paiement = Paiement.objects.get(id=paiement_id)
     
+    # Créez le contexte pour le modèle HTML
+    context = {
+        'paiement': paiement,
+    }
+    
+    # Chargez le template HTML
+    html_string = render_to_string('templates/recu_paiement.html', context)
+
+    # Générer le PDF avec WeasyPrint
+    html = HTML(string=html_string)
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        html.write_pdf(target=output.name)
+        output.seek(0)
+        response = HttpResponse(output.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename=recu_{paiement.reference}.pdf'
+        return response
+
     
     

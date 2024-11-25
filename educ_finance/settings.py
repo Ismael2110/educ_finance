@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     "ie_app.apps.IeAppConfig",
     "gestion_administratif",
     "gestion_finance",
-    
+    #"django_weasyprint"
 ]
 
 MIDDLEWARE = [
@@ -431,3 +431,7 @@ TINYMCE_DEFAULT_CONFIG = {
     "custom_undo_redo_levels": 10,
     "language": "fr_BF",  # To force a specific language instead of the Django current language.
 }
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+WEASYPRINT_BASEURL = 'http://127.0.0.1:8000'  # Modifiez en fonction de votre URL principale
