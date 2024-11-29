@@ -22,6 +22,11 @@ from parameter.models import TypePaiement
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django_weasyprint import WeasyTemplateResponseMixin
+from django_weasyprint.views import WeasyTemplateResponse
+from django_weasyprint.utils import django_url_fetcher
+from weasyprint import HTML
+
+
 import tempfile
 
 
@@ -213,27 +218,34 @@ class DossierPaiementCreateView(CustomCreateView):
 
 
 
-def generer_recu(request, paiement_id):
-    # Récupérer le paiement correspondant
-    from .models import Paiement  # Importez vos modèles
-    paiement = Paiement.objects.get(id=paiement_id)
-    
-    # Créez le contexte pour le modèle HTML
-    context = {
-        'paiement': paiement,
-    }
-    
-    # Chargez le template HTML
-    html_string = render_to_string('templates/recu_paiement.html', context)
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.views.generic.detail import DetailView
+from weasyprint import HTML
+import os
+import tempfile
+from django.template.loader import render_to_string
+import weasyprint
 
-    # Générer le PDF avec WeasyPrint
-    html = HTML(string=html_string)
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        html.write_pdf(target=output.name)
-        output.seek(0)
-        response = HttpResponse(output.read(), content_type='application/pdf')
-        response['Content-Disposition'] = f'inline; filename=recu_{paiement.reference}.pdf'
-        return response
+
+    
+class PrintReceiptView(CustomDetailView):
+    model = Paiement  # Modèle correspondant
+    template_name = 'recu.html'
+
+    def get_pdf_filename(self):
+        paiement = self.get_object()
+        return f"recu-{paiement.reference}.pdf"
+
+    # def render_to_response(self, context, **response_kwargs):
+    #     html = render_to_string(self.template_name, context)
+        
+    #     pdf = weasyprint.HTML(string=html).write_pdf()
+
+    #     response = HttpResponse(pdf, content_type='application/pdf')
+    #     response['Content-Disposition'] = f'attachment; filename="{self.get_pdf_filename()}"'
+    #     return response
+
 
     
     

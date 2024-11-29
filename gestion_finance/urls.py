@@ -2,7 +2,8 @@
 
 from django.urls import path
 from . import views
-from .views import generer_recu
+from .views import PrintReceiptView
+
 
 
 app_name = 'gestion_finance'
@@ -18,5 +19,9 @@ urlpatterns = [
     #path('Paiement/<uuid:pk>/<str:action>/', views.valider_ou_rejeter_Paiement, name='valider_ou_rejeter_Paiement'),
     path('paiement/dossier/list', views.DossierValideListView.as_view(), name='dossier-list'),
     path('paiements/create/<uuid:pk>', views.DossierPaiementCreateView.as_view(), name='dossier-paiement'),
-    path('paiements/<uuid:paiement_id>/recu/', generer_recu, name='generer-recu'),
+    path('paiements/<uuid:pk>/recu/', PrintReceiptView.as_view(), name='print_receipt'),
+    
+    
+    
+    
 ]

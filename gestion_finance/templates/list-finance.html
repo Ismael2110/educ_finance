@@ -24,3 +24,9 @@
 
 {% endblock table-rows %}
 
+{% block other-options %}
+<a href="{% url 'gestion_finance:print_receipt' object.id %}" class="btn btn-outline-secondary">
+    Générer Reçu
+</a>
+{% endblock other-options %}
+
