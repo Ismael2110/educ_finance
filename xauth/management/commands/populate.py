@@ -35,6 +35,7 @@ class Command(BaseCommand):
         Permission.objects.get_or_create(
             codename="list_group",
             name="Can list group",
+            
             content_type=ContentType.objects.get_for_model(Group),
         )
 

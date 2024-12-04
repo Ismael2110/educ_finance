@@ -1,12 +1,13 @@
-{% extends "bases/base.html" %}
 {% load icon %}
 {% load static %}
 
-
-{% block content %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reçu de Paiement</title>
     <style>
-        
         .container {
             width: 80%;
             margin: 50px auto;
@@ -15,6 +16,7 @@
             padding: 30px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
+
         .header12 {
             display: flex;
             align-items: center;
@@ -23,67 +25,95 @@
             border-bottom: 2px solid #a3c4f7; /* Bleu plus doux */
             padding-bottom: 20px;
         }
+
         .header12 img {
             max-width: 200px;
             height: auto;
         }
+
         .header12-content {
             text-align: left;
             margin-left: 20px;
         }
+
         .header12-content h1 {
             font-size: 28px;
             color: #6fa3e1; /* Bleu plus doux */
             margin: 0;
         }
+
         .header12-content p {
             font-size: 16px;
             color: #7f8c8d;
             margin: 5px 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         th, td {
             padding: 15px;
             text-align: left;
             font-size: 16px;
         }
+
         th {
             background-color: #d6e9f8; /* Bleu clair */
             color: #000;
             font-weight: bold;
             text-transform: uppercase;
         }
+
         td {
             background-color: #f9f9f9;
             border-bottom: 1px solid #d6e9f8;
         }
+
         tr:nth-child(even) td {
             background-color: #ecf5fb;
         }
+
         tr:hover td {
             background-color: #d0f1ff;
         }
+
         .footer {
             text-align: center;
             margin-top: 30px;
             font-size: 14px;
             color: #7f8c8d;
         }
+
         .footer p {
             margin: 5px 0;
         }
+
         .signature {
             margin-top: 40px;
             text-align: right;
             font-size: 16px;
             color: #6fa3e1; /* Bleu plus doux */
         }
-    </style>
 
+        .btn-primary {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #6fa3e1;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a92d4;
+        }
+    </style>
+</head>
+<body>
     <div class="container">
         <div class="header12">
             <!-- Logo placé à gauche -->
@@ -124,11 +154,5 @@
         </div>
     </div>
 
-    <a href="{% url 'gestion_finance:print_receipt' object.id %}" 
-   class="btn btn-primary" 
-   style="text-decoration: none; color: white; background-color: #6fa3e1; padding: 10px 20px; border-radius: 5px;">
-    Télécharger le reçu PDF
-</a>
-
+</body>
 </html>
-{% endblock content %}

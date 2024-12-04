@@ -149,13 +149,14 @@
                                         <td class="text-center">
                                             <div class="btn-group" role="group" aria-label="Options">
                                                 {% block list-options-solde %}
-                                                <a href="{% url 'gestion_administratif:dossier-detail' object.id %}">
+                                                <a href="{% url 'gestion_finance:paiement-detail' object.id %}">
                                                     <button type="button" class="btn btn-outline-success">
-                                                        {% icon "check-circle" height="16px" width="16px" %} Valider
+                                                        {% icon "info" height="16px" width="16px" %} 
                                                     </button>
                                                 </a>
                                                 <a href="{% url 'gestion_finance:print_receipt' object.id %}" class="btn btn-outline-secondary">
-                                                    Générer Reçu
+                                                    {% icon "printer" height="16px" width="16px" %} 
+                                                    Reçu
                                                 </a>
                                                 
                                                 {% endblock list-options-solde %}

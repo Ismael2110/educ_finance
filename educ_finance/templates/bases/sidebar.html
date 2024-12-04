@@ -5,6 +5,7 @@
         <ul class="metismenu" id="menu">
             <li><a href="{% url 'index-view' %}" aria-expanded="false">{% icon "book" class="css-class" %}<span
                 class="nav-text"> Tableau de Bord</span></a></li>
+                {% if perms.xauth.access_gestion_administratif %}
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-app-store"></i><span class="nav-text">Gestion Administrative</span></a>
                 <ul aria-expanded="false">
@@ -14,6 +15,8 @@
                     <li><a href="#">Rapport Académique</a></li>
                 </ul>
             </li>
+            {% endif %}
+            {% if perms.xauth.access_gestion_finance %}
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class="icon icon-chart-bar-33"></i><span class="nav-text">Gestion Financière</span></a>
                 <ul aria-expanded="false">
@@ -22,6 +25,8 @@
                     <li><a href="#">Rapport Financier</a></li>
                 </ul>
             </li>
+            {% endif %}
+            {% if perms.xauth.access_parameter %}
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">{% icon "settings" class="css-class" %}<span class="nav-text"> Paramètres</span></a>
                 <ul aria-expanded="false">
                     <li><a  href="{% url 'parameter:ufr-list' %}">Liste des Ufrs</a></li>
@@ -32,14 +37,28 @@
                     <li><a href="{% url 'parameter:typepaiement-list'%}"> Type de Paiement</a></li>
                 </ul>
             </li>
+            {% endif %}
+            {% if perms.xauth.access_account %}
+                <li {% if "auth" in request.path %} class="active" {% endif %}>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        {% icon "users" class="css-class" %}
+                        <span class="nav-text"> Gestion d'utilisateurs</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        {% if perms.xauth.list_user %}
+                        <li {% if "users" in request.path %} class="active" {% endif %}>
+                            <a href="{% url 'auth:user-list' %}">Les utilisateurs</a>
+                        </li>
+                        {% endif %}
+                        {% if perms.auth.list_group %}
+                        <li {% if "groups" in request.path %} class="active" {% endif %}>
+                            <a href="{% url 'auth:group-list' %}">Droit d'accès</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
 
-            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">{% icon "users" class="css-class" %}<span class="nav-text"> Gestion d'utilisateurs</span></a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'auth:user-list' %}">Les utilisateurs</a></li>
-                    <li><a href="{% url 'auth:group-list' %}">Droit d'accès</a></li>
-                </ul>
-            </li>
-            
     </div>
 
 

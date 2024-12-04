@@ -3,74 +3,75 @@
 {% block content %}
 <div class="container-fluid py-4">
     <div class="row">
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">{% icon "folder" class="css-class"  %}</i>
+        <!-- Dossiers -->
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-lg shadow-dark text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "folder" class="css-class" %}</i>
+                    </div>
+                    <div class="text-end">
+                        <p class="text-sm mb-0 text-capitalize">Dossiers</p>
+                        <h4 class="mb-0">{{ nombre_dossiers }}</h4>
+                    </div>
+                </div>
+                <div class="pt-3">
+                    <a href="{% url 'gestion_administratif:dossier-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Nombre de Dossier</p>
-              <h4 class="mb-0">127</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
+        <!-- Total Enseignant -->
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+              <div class="d-flex align-items-center">
+                  <div class="icon icon-lg shadow-primary text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                      <i class="material-icons opacity-10">{% icon "user" class="css-class" %}</i>
+                  </div>
+                  <div class="text-end">
+                      <p class="text-sm mb-0 text-capitalize">Total Enseignant</p>
+                      <h4 class="mb-0">{{ nombre_enseignants }}</h4>
+                  </div>
+              </div>
+              <div class="pt-3">
+                  <a href="{% url 'parameter:enseignant-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
+              </div>
+          </div>
       </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10 ">{% icon "user" class="css-class" %}</i>
+      
+        <!-- Total Ufr -->
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-lg shadow-success text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "server" class="css-class" %}</i>
+                    </div>
+                    <div class="text-end">
+                        <p class="text-sm mb-0 text-capitalize">Total Ufr</p>
+                        <h4 class="mb-0">{{ nombre_ufr }}</h4>
+                    </div>
+                </div>
+                <div class="pt-3">
+                    <a href="{% url 'parameter:ufr-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Total Enseignant</p>
-              <h4 class="mb-0">23</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">{% icon "server" class="css-class" %}</i>
+        <!-- Filières -->
+        <div class="col-xl-3 col-sm-6">
+            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-lg shadow-info text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "command" class="css-class" %}</i>
+                    </div>
+                    <div class="text-end">
+                        <p class="text-sm mb-0 text-capitalize">Filières</p>
+                        <h4 class="mb-0">{{ nombre_filiere }}</h4>
+                    </div>
+                </div>
+                <div class="pt-3">
+                    <a href="{% url 'parameter:filiere-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Total Ufr</p>
-              <h4 class="mb-0">35</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">{% icon "command" class="css-class" %}</i>
-            </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Sales</p>
-              <h4 class="mb-0">430</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 {% endblock content %}

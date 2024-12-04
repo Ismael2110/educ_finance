@@ -1,4 +1,6 @@
 from multiprocessing import context
+from gestion_administratif.models import Dossier
+from parameter.models import Enseignant, UFR, Filiere
 from typing import Any
 from django.db.models import Model, Q, QuerySet, Field
 from django.shortcuts import redirect
@@ -31,12 +33,15 @@ class RedirectionView(RedirectView):
     url = "/home/"
 
 class IndexTemplateView(TemplateView):
-
-    def get_template_names(self):
-        return ["dashboard.html"]
+    template_name = "dashboard.html"  # Spécifiez directement le nom du template
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Récupération dynamique du nombre de dossiers
+        context['nombre_dossiers'] = Dossier.objects.count()
+        context['nombre_enseignants'] = Enseignant.objects.count()
+        context['nombre_ufr'] = UFR.objects.count()
+        context['nombre_filiere'] = Filiere.objects.count()
         return context
 
 

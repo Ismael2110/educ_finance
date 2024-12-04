@@ -26,7 +26,8 @@
 
 {% block other-options %}
 <a href="{% url 'gestion_finance:print_receipt' object.id %}" class="btn btn-outline-secondary">
-    Générer Reçu
+    {% icon "printer" height="16px" width="16px" %} 
+    Reçu
 </a>
 {% endblock other-options %}
 

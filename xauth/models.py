@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.choices import Choices
 from datetime import datetime
 from phonenumber_field.modelfields import PhoneNumberField
+from educ_finance.constants import MEDIUM_LENGTH, MIN_LENGTH
 from model_utils.models import (
     TimeStampedModel,
     UUIDModel,
@@ -71,23 +72,26 @@ class User(AbstractUser, CommonAbstractModel):
             ("access_parameter", "Can access to parameter module"),
             ("access_account", "Can access to account module"),
             ("access_statistics", "Can access to statistics module"),
+            ("access_gestion_finance", "Can access to gestion_finance module"),
+            ("access_gestion_administratif", "Can access to gestion_administratif module"),
+            
         ]
 
 
 
-class AccountActivationSecret(CommonAbstractModel):
+"""class AccountActivationSecret(CommonAbstractModel):
     user = models.OneToOneField(User, on_delete=CONSTRAINT)
-    secret = models.CharField(max_length=50)
+    secret = models.CharField(max_length=50)"""
 
 
-class Assign(CommonAbstractModel):
+"""class Assign(CommonAbstractModel):
     user = models.OneToOneField(
         User, on_delete=CONSTRAINT, related_name="assign", null=True, blank=True
     )
 
     group_assign = models.ForeignKey(
         "auth.Group", on_delete=CONSTRAINT, null=True, blank=True
-    )
+    )"""
 
 
 # Définition du modèle UserProfile
@@ -97,3 +101,28 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class AccountActivationSecret(CommonAbstractModel):
+    user = models.OneToOneField(User, on_delete=CONSTRAINT)
+    secret = models.CharField(max_length = MIN_LENGTH)
+
+
+class Assign(CommonAbstractModel):
+    assigner = models.ForeignKey(
+        User, on_delete=CONSTRAINT, related_name="assigner", null=True, blank=True
+    )
+    unassigner = models.ForeignKey(
+        User, on_delete=CONSTRAINT, related_name="unassigner", null=True, blank=True
+    )
+    
+    user = models.OneToOneField(
+        User, on_delete=CONSTRAINT, related_name="assign", null=True, blank=True
+    )
+
+    nomination_date = models.DateField(null=True)
+    effective_date = models.DateField(null=True)
+    end_date = models.DateField(null=True, blank=True)
+    group_assign = models.ForeignKey(
+        "auth.Group", on_delete=CONSTRAINT, null=True, blank=True
+    )

@@ -3,6 +3,7 @@
 
 {% block breadcrumb %}
 <div class="container pt-5">
+<li class="breadcrumb-item"><a href="{% url 'index-view' %}">Accueil</a></li>
 <li class="breadcrumb-item"><a href="{{list_url}}">{{list_of}}</a></li>
 </div>
 {% endblock breadcrumb %}

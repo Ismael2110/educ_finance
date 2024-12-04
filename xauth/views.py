@@ -11,15 +11,17 @@ from django.contrib.auth import login as auth_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.db.models import Q, Sum, Max
 from django.db import transaction
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.conf import settings
-
+from django.contrib.sites.shortcuts import get_current_site
 from formset.views import FormViewMixin, FormView
-
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 # from web.mails import mail_password
 from educ_finance import views as cviews
@@ -376,7 +378,6 @@ class UserUpdatePasswordView(auth_views.PasswordChangeView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.object = get_object_or_404(models.User, pk=self.kwargs.get("pk"))
         context["add_of"] = "Modification mot de passe"
         context["card_title"] = "Modification mot de passe"
         context["list_of"] = "Liste des utilisateurs"
@@ -396,15 +397,16 @@ class UserUpdatePasswordView(auth_views.PasswordChangeView):
         return super().form_valid(form)
 
 
-class UserSendSecreteKey(View):
+class UserSendSecreteKey( View):
     def get_success_url(self):
-        return reverse("auth:user-list")
+        return reverse(
+            "auth:user-list",
+        )
 
     def get_object(self, pk):
         return get_object_or_404(models.User, pk=pk)
 
     def get(self, request, *args, **kwargs):
-        from django.core.mail import send_mail
 
         pk = self.kwargs.get("pk")
         if pk is None:
@@ -412,30 +414,22 @@ class UserSendSecreteKey(View):
         self.object = self.get_object(pk)
 
         if not self.object.is_active:
-            activation = models.AccountActivationSecret.all_objects.filter(
-                user=self.object
+            current_site = get_current_site(request)
+            uid = urlsafe_base64_encode(force_bytes(self.object.pk))
+            token = PasswordResetTokenGenerator().make_token(self.object)
+            activation_link = reverse(
+                "user-set-password", kwargs={"uidb64": uid, "token": token}
             )
-
-            print("activation exists", activation.exists())
-            if activation.exists():
-                secret = activation.first().secret
-            else:
-                secret: str = models.User.objects.make_random_password(
-                    length=GENERATED_PASSWORD_LENGTH
-                )
-                models.AccountActivationSecret.all_objects.create(
-                    user=self.object, secret=secret
-                )
-            send_mail(
-                "Clé d'activation de compte",
-                secret,
-                DEFAULT_FROM_EMAIL,
-                [self.object.email],
+            activation_url = (
+                f"{request.scheme}://{current_site.domain}{activation_link}"
             )
+            print(activation_url)
+            # app_tasks.account_activation_mail.delay(str(self.object.pk), activation_url)
             messages.success(
                 self.request,
-                f"Le code d'activation de {self.object.get_full_name()} envoyé avec succès.",
+                f"Un mail sera envoyé à {self.object.get_full_name()} pour l'activation de son compte.",
             )
+
         else:
             messages.warning(
                 self.request,
@@ -591,13 +585,20 @@ class CustomPasswordResetConfirmView(
         context["card_title"] = "Réinitialisation de votre mot de passe"
         return context
 
-
 class SetPasswordView(FormView):
     template_name = "public/set-password.html"
     success_url = reverse_lazy("user-login")
     form_class = forms.CustomSetPasswordForm
+
     def dispatch(self, request, *args, **kwargs):
-        self.user = get_object_or_404(models.User, pk=self.kwargs.get("pk"))
+        token = kwargs.get("token")
+        uid = force_str(urlsafe_base64_decode(kwargs.get("uidb64")))
+        self.user = get_object_or_404(models.User, pk=uid)
+        r = PasswordResetTokenGenerator().check_token(self.user, token)
+
+        if not r:
+            raise Http404()
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -612,13 +613,8 @@ class SetPasswordView(FormView):
 
     def form_valid(self, form):
         form.save()
-        models.AccountActivationSecret.objects.filter(user=self.user).first().delete(
-            soft=False
-        )
         messages.success(self.request, "Votre compte a été activé avec succès.")
         return super().form_valid(form)
-
-
 class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
     template_name = "public/password-reset-complete.html"
     # success_url = reverse_lazy("password-reset-complete")

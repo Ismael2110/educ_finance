@@ -228,8 +228,8 @@ from django.template.loader import render_to_string
 import weasyprint
 
 
-    
-class PrintReceiptView(CustomDetailView):
+#    
+class PrintReceiptView(WeasyTemplateResponseMixin, CustomDetailView):
     model = Paiement  # Modèle correspondant
     template_name = 'recu.html'
 
