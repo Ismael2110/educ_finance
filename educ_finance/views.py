@@ -33,7 +33,17 @@ class RedirectionView(RedirectView):
     url = "/home/"
 
 class IndexTemplateView(TemplateView):
-    template_name = "dashboard.html"  # Spécifiez directement le nom du template
+    
+        
+    def get_template_names(self) -> list[str]:
+        if self.request.user.has_perm("xauth.is_responsable_administrative"):
+            return ["dashboard.html"]
+
+        if self.request.user.has_perm("xauth.is_responsable_finance"):
+            return ["dashboard2.html"]
+        return ["dashboard2.html"]
+
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,6 +52,10 @@ class IndexTemplateView(TemplateView):
         context['nombre_enseignants'] = Enseignant.objects.count()
         context['nombre_ufr'] = UFR.objects.count()
         context['nombre_filiere'] = Filiere.objects.count()
+        
+        context['nombre_dossiers_inities'] = Dossier.objects.filter(status="initie").count()
+        context['nombre_dossiers_partiels'] = Dossier.objects.filter(status="partiellement payé").count()
+        context['nombre_dossiers_soldes'] = Dossier.objects.filter(status="soldé").count()
         return context
 
 

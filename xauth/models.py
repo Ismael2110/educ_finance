@@ -74,6 +74,8 @@ class User(AbstractUser, CommonAbstractModel):
             ("access_statistics", "Can access to statistics module"),
             ("access_gestion_finance", "Can access to gestion_finance module"),
             ("access_gestion_administratif", "Can access to gestion_administratif module"),
+            ("is_responsable_administrative", "est un responsable administratif"),
+            ("is_responsable_financier", "est un responsable financier"),
             
         ]
 

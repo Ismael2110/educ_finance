@@ -2,75 +2,94 @@
 {% load icon %}
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">{% icon "folder" class="css-class"  %}</i>
+    <!-- Section des Statistiques -->
+    <div class="row g-4">
+        <!-- Dossier initié -->
+        <div class="col-lg-4 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #317AC1; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-md shadow-dark text-center p-2 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "folder-open" class="css-class" %}</i>
+                    </div>
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Dossier initié</p>
+                        <h5 class="mb-0">{{ nombre_dossiers_inities }}</h5>
+                    </div>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Dossiers transferés</p>
-              <h4 class="mb-0">127</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10 ">{% icon "user" class="css-class" %}</i>
+        <!-- Dossier partiellement payé -->
+        <div class="col-lg-4 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #E1AD01; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-md shadow-primary text-center p-2 me-3" style="background-color: #F0C94D; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "attach-money" class="css-class" %}</i>
+                    </div>
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Dossier partiellement payé</p>
+                        <h5 class="mb-0">{{ nombre_dossiers_partiels }}</h5>
+                    </div>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Dossiers en cours de Paiement</p>
-              <h4 class="mb-0">23</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class=" bg-primary">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-              <i class="material-icons opacity-10">{% icon "server" class="css-class" %}</i>
+        <!-- Dossier soldé -->
+        <div class="col-lg-4 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #28A745; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-md shadow-success text-center p-2 me-3" style="background-color: #83C77E; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "check-circle" class="css-class" %}</i>
+                    </div>
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Dossier soldé</p>
+                        <h5 class="mb-0">{{ nombre_dossiers_soldes }}</h5>
+                    </div>
+                </div>
             </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Dossiers Payés</p>
-              <h4 class="mb-0">35</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
         </div>
-      </div>
-      <div class="col-xl-3 col-sm-6">
-        <div class="card">
-          <div class="card-header p-3 pt-2">
-            <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">{% icon "command" class="css-class" %}</i>
-            </div>
-            <div class="text-end pt-1">
-              <p class="text-sm mb-0 text-capitalize">Sales</p>
-              <h4 class="mb-0">430</h4>
-            </div>
-          </div>
-          <hr class="dark horizontal my-0">
-          <div class="card-footer p-3">
-            <p class="mb-0"><span class="text-success text-sm font-weight-bolder">Voir </span>plus</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+
+    <!-- Section des Diagrammes -->
+    <div class="row g-4 mt-4">
+        <!-- Diagramme des Dossiers -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow p-4">
+                <h6 class="text-center">Répartition des Dossiers</h6>
+                <canvas id="chartDossiers" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lien vers Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+<script>
+    // Données dynamiques Django
+    const dataInities = {{ nombre_dossiers_inities|default:0 }};
+    const dataPartiels = {{ nombre_dossiers_partiels|default:0 }};
+    const dataSoldes = {{ nombre_dossiers_soldes|default:0 }};
+
+    // Diagramme circulaire pour les dossiers
+    const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
+    const chartDossiers = new Chart(ctxDossiers, {
+        type: 'doughnut',
+        data: {
+            labels: ['Initiés', 'Partiellement payés', 'Soldés'],
+            datasets: [{
+                label: 'Répartition des dossiers',
+                data: [dataInities, dataPartiels, dataSoldes],
+                backgroundColor: ['#317AC1', '#E1AD01', '#28A745'],
+                borderColor: ['#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+</script>
 {% endblock content %}

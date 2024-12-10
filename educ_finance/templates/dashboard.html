@@ -2,76 +2,145 @@
 {% load icon %}
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
+    <!-- Section des Statistiques -->
+    <div class="row g-4">
         <!-- Dossiers -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+        <div class="col-lg-3 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #317AC1; border-radius: 10px;">
                 <div class="d-flex align-items-center">
-                    <div class="icon icon-lg shadow-dark text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                    <div class="icon icon-md shadow-dark text-center p-2 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
                         <i class="material-icons opacity-10">{% icon "folder" class="css-class" %}</i>
                     </div>
-                    <div class="text-end">
+                    <div>
                         <p class="text-sm mb-0 text-capitalize">Dossiers</p>
-                        <h4 class="mb-0">{{ nombre_dossiers }}</h4>
+                        <h5 class="mb-0">{{ nombre_dossiers }}</h5>
                     </div>
-                </div>
-                <div class="pt-3">
-                    <a href="{% url 'gestion_administratif:dossier-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
                 </div>
             </div>
         </div>
-        <!-- Total Enseignant -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
-              <div class="d-flex align-items-center">
-                  <div class="icon icon-lg shadow-primary text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
-                      <i class="material-icons opacity-10">{% icon "user" class="css-class" %}</i>
-                  </div>
-                  <div class="text-end">
-                      <p class="text-sm mb-0 text-capitalize">Total Enseignant</p>
-                      <h4 class="mb-0">{{ nombre_enseignants }}</h4>
-                  </div>
-              </div>
-              <div class="pt-3">
-                  <a href="{% url 'parameter:enseignant-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
-              </div>
-          </div>
-      </div>
-      
-        <!-- Total Ufr -->
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+        <!-- Enseignants -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #317AC1; border-radius: 10px;">
                 <div class="d-flex align-items-center">
-                    <div class="icon icon-lg shadow-success text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
-                        <i class="material-icons opacity-10">{% icon "server" class="css-class" %}</i>
+                    <div class="icon icon-md shadow-primary text-center p-2 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "user" class="css-class" %}</i>
                     </div>
-                    <div class="text-end">
-                        <p class="text-sm mb-0 text-capitalize">Total Ufr</p>
-                        <h4 class="mb-0">{{ nombre_ufr }}</h4>
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Enseignants</p>
+                        <h5 class="mb-0">{{ nombre_enseignants }}</h5>
                     </div>
                 </div>
-                <div class="pt-3">
-                    <a href="{% url 'parameter:ufr-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
+            </div>
+        </div>
+        <!-- UFR -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #317AC1; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <div class="icon icon-md shadow-success text-center p-2 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                        <i class="material-icons opacity-10">{% icon "server" class="css-class" %}</i>
+                    </div>
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">UFR</p>
+                        <h5 class="mb-0">{{ nombre_ufr }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Filières -->
-        <div class="col-xl-3 col-sm-6">
-            <div class="p-3 text-white border-radius-xl shadow" style="background-color: #317AC1; border-radius: 10px;">
+        <div class="col-lg-3 col-sm-6">
+            <div class="p-3 text-white shadow" style="background-color: #317AC1; border-radius: 10px;">
                 <div class="d-flex align-items-center">
-                    <div class="icon icon-lg shadow-info text-center p-3 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
+                    <div class="icon icon-md shadow-info text-center p-2 me-3" style="background-color: #7DA7D9; border-radius: 50%;">
                         <i class="material-icons opacity-10">{% icon "command" class="css-class" %}</i>
                     </div>
-                    <div class="text-end">
+                    <div>
                         <p class="text-sm mb-0 text-capitalize">Filières</p>
-                        <h4 class="mb-0">{{ nombre_filiere }}</h4>
+                        <h5 class="mb-0">{{ nombre_filiere }}</h5>
                     </div>
-                </div>
-                <div class="pt-3">
-                    <a href="{% url 'parameter:filiere-list' %}" class="text-white text-sm font-weight-bolder">Voir plus</a>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Section des Diagrammes -->
+    <div class="row g-4 mt-4">
+        <!-- Diagramme des Dossiers -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow p-4">
+                <h6 class="text-center">Répartition des Dossiers</h6>
+                <canvas id="chartDossiers" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+        <!-- Diagramme des Enseignants -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow p-4">
+                <h6 class="text-center">Statistiques Enseignants</h6>
+                <canvas id="chartEnseignants" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Lien vers Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous" ></script>
+<script>
+    // Données dynamiques Django
+    const dataDossiers = {{ nombre_dossiers|default:0 }};
+    const dataEnseignants = {{ nombre_enseignants|default:0 }};
+    const dataUfr = {{ nombre_ufr|default:0 }};
+    const dataFilieres = {{ nombre_filiere|default:0 }};
+
+    // Diagramme circulaire pour les dossiers
+    const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
+    const chartDossiers = new Chart(ctxDossiers, {
+        type: 'doughnut',
+        data: {
+            labels: ['Dossiers', 'UFR', 'Filières'],
+            datasets: [{
+                label: 'Répartition des dossiers',
+                data: [dataDossiers, dataUfr, dataFilieres],
+                backgroundColor: ['#317AC1', '#7DA7D9', '#f8d7da'],
+                borderColor: ['#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+
+    // Diagramme en barres pour les enseignants
+    const ctxEnseignants = document.getElementById('chartEnseignants').getContext('2d');
+    const chartEnseignants = new Chart(ctxEnseignants, {
+        type: 'bar',
+        data: {
+            labels: ['Enseignants', 'Dossiers', 'UFR', 'Filières'],
+            datasets: [{
+                label: 'Statistiques générales',
+                data: [dataEnseignants, dataDossiers, dataUfr, dataFilieres],
+                backgroundColor: ['#317AC1', '#7DA7D9', '#f8d7da', '#c3e6cb'],
+                borderColor: ['#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock content %}

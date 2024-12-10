@@ -22,7 +22,7 @@ from formset.views import FormViewMixin, FormView
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from django.utils.crypto import get_random_string
 # from web.mails import mail_password
 from educ_finance import views as cviews
 from xauth import forms
@@ -256,7 +256,11 @@ class UserCreateView(cviews.CustomCreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.is_active = False
+        while True:
+                random_username = f"N{get_random_string(8)}"
+                if not models.User.objects.filter(username=random_username).exists():
+                    form.instance.username = random_username
+                    break
         return super().form_valid(form)
 
 
@@ -536,6 +540,12 @@ class GroupDeleteView(cviews.CustomDeleteView):
 class CustomLoginView(auth_views.LoginView):
     template_name = "public/login.html"
     success_url = reverse_lazy("index-view")
+    
+    def form_invalid(self, form):
+        messages.warning(self.request, "Échec de la connexion. Vérifiez vos identifiants et réessayez.")
+        return super().form_invalid(form)
+
+        
     def get_context_data(self, **kwargs):
         print('azertyuio')
         return super().get_context_data(**kwargs)

@@ -435,3 +435,7 @@ TINYMCE_DEFAULT_CONFIG = {
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 WEASYPRINT_BASEURL = 'http://127.0.0.1:8000'  # Modifiez en fonction de votre URL principale
+
+SITE_PROTOCOL = "http"
+SITE_DOMAIN = "localhost:8000"
+
