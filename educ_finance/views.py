@@ -56,6 +56,7 @@ class IndexTemplateView(TemplateView):
         context['nombre_dossiers_inities'] = Dossier.objects.filter(status="initie").count()
         context['nombre_dossiers_partiels'] = Dossier.objects.filter(status="partiellement payé").count()
         context['nombre_dossiers_soldes'] = Dossier.objects.filter(status="soldé").count()
+        context['dossiers'] = Dossier.objects.all()
         return context
 
 
@@ -505,3 +506,10 @@ class CustomEditCollectionView(CustomViewMixin, EditCollectionView):
                 context["detail_url"] = ""
 
         return context
+
+from django.shortcuts import render
+from gestion_administratif.models import Dossier
+
+def liste_dossiers_view(request):
+    dossiers = Dossier.objects.all()  # Récupération de tous les dossiers
+    return render(request, 'dashboard.html', {"dossiers": dossiers})

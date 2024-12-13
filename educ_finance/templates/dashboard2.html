@@ -50,14 +50,55 @@
 
     <!-- Section des Diagrammes -->
     <div class="row g-4 mt-4">
-        <!-- Diagramme des Dossiers -->
+        <!-- Diagramme circulaire des Dossiers -->
         <div class="col-lg-6 col-md-12">
             <div class="card shadow p-4">
                 <h6 class="text-center">Répartition des Dossiers</h6>
                 <canvas id="chartDossiers" style="max-height: 300px;"></canvas>
             </div>
         </div>
+        <!-- Diagramme en barres pour les Statistiques générales -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow p-4">
+                <h6 class="text-center">Statistiques générales</h6>
+                <canvas id="chartStatistiques" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
     </div>
+
+    <!-- Section de la Liste des Dossiers -->
+    <div class="row g-4 mt-4">
+        <div class="col-12">
+            <div class="card shadow p-4">
+                <h6 class="text-center mb-3">Liste des Dossiers</h6>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nom du Dossier</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Date de Création</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dossier in dossiers %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ dossier.nom}}</td>
+                            <td>{{ dossier.status }}</td>
+                            <td>{{ dossier.date_creation|date:"d/m/Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Aucun dossier disponible.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
 </div>
 
 <!-- Lien vers Chart.js -->
@@ -68,7 +109,7 @@
     const dataPartiels = {{ nombre_dossiers_partiels|default:0 }};
     const dataSoldes = {{ nombre_dossiers_soldes|default:0 }};
 
-    // Diagramme circulaire pour les dossiers
+    // Configuration du diagramme circulaire
     const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
     const chartDossiers = new Chart(ctxDossiers, {
         type: 'doughnut',
@@ -86,7 +127,36 @@
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'top'
+                    position: 'top',
+                }
+            }
+        }
+    });
+
+    // Configuration du diagramme en barres
+    const ctxStatistiques = document.getElementById('chartStatistiques').getContext('2d');
+    const chartStatistiques = new Chart(ctxStatistiques, {
+        type: 'bar',
+        data: {
+            labels: ['Initiés', 'Partiellement payés', 'Soldés'],
+            datasets: [{
+                label: 'Nombre de Dossiers',
+                data: [dataInities, dataPartiels, dataSoldes],
+                backgroundColor: ['#317AC1', '#E1AD01', '#28A745'],
+                borderColor: ['#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }

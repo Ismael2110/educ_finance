@@ -18,19 +18,26 @@
 {% endblock stylesheet %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{{list_url}}">{{list_of}}</a></li>
-<li class="breadcrumb-item active" aria-current="page">{{card_title}}</li>
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+            <h2>{{ card_title }}</h2>
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active">{{ card_title }}</li>
+        </ol>
+    </div>
+</div>
 {% endblock breadcrumb %}
 
 {% block content %}
 <div class="card mb-5">
     <div class="my-2"> 
-        <div class="card">
-            <div class="card-header">
-                <h2 class="text-dark fw-bold m-0 text-start">{{ card_title }}</h2> <!-- Modification ici -->
-            </div>
-        </div>
-	<div class="col-md-5">
+        
+	<div class="col-md-12">
 		<div>
 			<django-formset endpoint="{{request.path}}" csrf-token="{{csrf_token}}"
 				withhold-feedback="errors warnings success">

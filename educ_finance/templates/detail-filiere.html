@@ -54,19 +54,26 @@
         color: #555;
     }
 
-    /* Section des boutons alignés face à face */
+    /* Section des boutons alignés */
     .btn-group-side {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 1rem;
+        justify-content: center; /* Centre les boutons horizontalement */
+        gap: 1rem; /* Espace uniforme entre les boutons */
+        margin-top: 1.5rem;
     }
-
     .btn-group-side .btn {
-        width: auto;
+        width: 150px; /* Assure une largeur uniforme pour les boutons */
+        text-align: center; /* Centrage du contenu */
+        padding: 0.75rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-group-side .btn:hover {
+        transform: scale(1.05); /* Effet d’agrandissement au survol */
     }
 
+    /* Bouton Retour */
     .btn-group-back {
+        text-align: center; /* Centre le bouton Retour */
         margin-bottom: 1.5rem;
     }
 
@@ -80,12 +87,12 @@
     /* Adaptation pour les écrans mobiles */
     @media (max-width: 768px) {
         .btn-group-side {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: flex-start;
+            flex-direction: column; /* Affiche les boutons en colonne */
+            gap: 1rem; /* Espace entre les boutons */
+            align-items: center; /* Centre les boutons dans la colonne */
         }
         .btn-group-side .btn {
-            width: auto;
+            width: 100%; /* Les boutons prennent toute la largeur */
         }
     }
 </style>
@@ -113,7 +120,7 @@
 <div class="row justify-content-center">
     <div class="col-12">
         <div class="row">
-            <!-- Cadre contenant les détails, prenant 6 colonnes -->
+            <!-- Cadre contenant les détails -->
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
@@ -147,7 +154,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Section des boutons -->
             <div class="col-md-6">
                 <!-- Bouton Retour -->

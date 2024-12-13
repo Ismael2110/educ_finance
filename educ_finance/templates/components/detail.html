@@ -8,11 +8,13 @@
 
 {% block breadcrumb %}
 <div class="row page-titles mx-0">
-    <div class="col-sm-6 p-md-0">
-        <div class="welcome-text">
-            <h2>{{card_title}}</h2>
+    
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h2>{{ card_title }}</h2>
+            </div>
         </div>
-    </div>
+   
     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
@@ -34,8 +36,8 @@
         {% block more-info %}{% endblock more-info %}
     </div>
 
-    <div class="card-body">
-        <div class="table-responsive">
+    <div class="row justify-content-center">
+        <div class="col-12">
             <div class="row">
                 <div class="col-md-7">
                     <div class="card card-scrollable">
@@ -57,7 +59,7 @@
                     <section class="card card-scrollable">
                         <div class="card-header">
                             <strong class="card-title">
-                                Options / Détail
+                                Options
                             </strong>
                         </div>
                         <div class="card-body scrollable">
