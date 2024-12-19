@@ -10,16 +10,16 @@
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
                 <i class="icon icon-app-store"></i><span class="nav-text">Gestion Administrative</span></a>
                 <ul aria-expanded="false">
-                    {% if perms.gestion_administratif.view_dossier_enseignant %}
+                    {% if perms.gestion_administratif.list_dossier %}
                     <li><a href="{% url 'gestion_administratif:dossier-list' %}">Dossiers Enseignants</a></li>
                     {% endif %}
-                    {% if perms.gestion_administratif.view_historique_paiement %}
+                    {% if perms.gestion_administratif.histori_dossier %}
                     <li><a href="{% url 'gestion_administratif:historique-dossier' %}">Etat de Paiement</a></li>
                     {% endif %}
-                    {% if perms.gestion_administratif.view_status_dossier %}
+                    {% if perms.gestion_administratif.statu_dossier %}
                     <li><a href="#">Status des Dossiers</a></li>
                     {% endif %}
-                    {% if perms.gestion_administratif.view_rapport_academique %}
+                    {% if perms.gestion_administratif.rapport_dossier %}
                     <li><a href="#">Rapport Académique</a></li>
                     {% endif %}
                 </ul>

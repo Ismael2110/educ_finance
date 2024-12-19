@@ -9,7 +9,8 @@ class Dossier(CommonAbstractModel):
         unique=True,
         blank=True,
         help_text="Code unique permettant d'identifier cet élément",
-        null=True
+        null=True, 
+        verbose_name="Fichier"
 
     )
 
@@ -74,6 +75,9 @@ class Dossier(CommonAbstractModel):
             ("export_dossier", "Can export dossier"),
             ("import_dossier", "Can import dossier"),
             ("print_dossier", "Can print dossier"),
+            ("histori_dossier", "Can list historique dossier"),
+            ("statu_dossier", "Can list statu dossier"),
+            ("rapport_dossier", "Can list rapport dossier"),
         ]
 
     def generate_unique_code(self):

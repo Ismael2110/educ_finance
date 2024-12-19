@@ -37,10 +37,14 @@ class DossierForm(FormMixin, ModelForm):
 )
     class Meta:
         model = Dossier
-        fields = ["file","enseignant","module"]
+        fields = ["file", "enseignant", "module"]
         widgets = { 
-            "file" : UploadedFileInput(attrs={"max-size": 1024 * 1024*3}),
-            
+            "file": UploadedFileInput(attrs={"max-size": 1024 * 1024 * 3}),
+        }
+        labels = {
+            "file": "Document à uploader",  # Nouveau nom pour le champ 'file'
+            "enseignant": "Nom de l'enseignant",  # Nouveau nom pour 'enseignant'
+            "module": "Module concerné",  # Nouveau nom pour 'module'
         }
 
 

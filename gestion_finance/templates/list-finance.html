@@ -1,4 +1,3 @@
-
 {% extends "list-style.html" %}
 {% load icon %}
 {% load static %}
@@ -16,18 +15,19 @@
 <td>{{ object.date_paiement }}</td>
 <td>{{ object.reference }}</td>
 {% comment %} <td>
-    <a href="{% url 'gestion_finance:paiement_detail' paiement.id %}">Détails</a>
+    <a href="{% url 'gestion_finance:paiement_detail' paiement.id %}" class="btn btn-outline-primary me-2">Détails</a>
     {% if paiement.statut == 'en_attente' %}
-        <a href="{% url 'gestion_finance:valider_paiement' paiement.id %}">Valider</a>
+        <a href="{% url 'gestion_finance:valider_paiement' paiement.id %}" class="btn btn-outline-success me-2">Valider</a>
     {% endif %}
 </td> {% endcomment %}
 
 {% endblock table-rows %}
 
 {% block other-options %}
-<a href="{% url 'gestion_finance:print_receipt' object.id %}" class="btn btn-outline-secondary">
-    {% icon "printer" height="16px" width="16px" %} 
-    Reçu
-</a>
+<div class="d-flex">
+    <a href="{% url 'gestion_finance:print_receipt' object.id %}" class="btn btn-outline-secondary me-3">
+        {% icon "printer" height="16px" width="16px" %}
+    </a>
+    
+</div>
 {% endblock other-options %}
-
