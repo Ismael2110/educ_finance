@@ -16,11 +16,10 @@
                     {% if perms.gestion_administratif.histori_dossier %}
                     <li><a href="{% url 'gestion_administratif:historique-dossier' %}">Etat de Paiement</a></li>
                     {% endif %}
-                    {% if perms.gestion_administratif.statu_dossier %}
-                    <li><a href="#">Status des Dossiers</a></li>
-                    {% endif %}
                     {% if perms.gestion_administratif.rapport_dossier %}
-                    <li><a href="#">Rapport Académique</a></li>
+                    <li><a href="{% url 'gestion_administratif:statistiques' %}">
+                        <span>Rapport</span>
+                    </a></li>
                     {% endif %}
                 </ul>
             </li>
@@ -87,6 +86,12 @@
                         {% endif %}
                     </ul>
                 </li>
+            {% endif %}
+
+            {% if perms.xauth.access_account %}
+            <li>
+                <a href="{% url 'auth:activity_log' %}">Voir les Logs</a>
+            </li>
             {% endif %}
         </ul>
     </div>

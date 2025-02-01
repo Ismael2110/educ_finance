@@ -73,4 +73,6 @@ urlpatterns = [
         views.RoleCreateView.as_view(),
         name="nomination-create",
     ),
+    path('activity/', views.ActivityLogView.as_view(), name='activity_log'),
 ]
+

@@ -1,0 +1,155 @@
+{% extends 'bases/base.html' %}
+{% load icon %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Titre et Introduction -->
+    <div class="row text-center mb-5">
+        <h1 class="fw-bold">Rapport de Statistiques Académiques</h1>
+        <p class="lead text-muted">Un aperçu détaillé des statistiques clés de notre institution pour la période en cours.</p>
+    </div>
+
+    <!-- Section des Statistiques Globales -->
+    <section class="mb-5">
+        <h3 class="text-center fw-bold mb-4">Statistiques Globales</h3>
+        <div class="row g-4">
+            {% for card in statistiques %}
+            <div class="col-lg-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="icon-box">
+                        <i class="material-icons opacity-10">{% icon card.icon %}</i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-uppercase fw-bold">{{ card.label }}</p>
+                        <h3 class="fw-bold">{{ card.value }}</h3>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Section des Graphiques -->
+    <section>
+        <h3 class="text-center fw-bold mb-4">Analyses Graphiques</h3>
+        <div class="row g-4">
+            <!-- Répartition des Dossiers -->
+            <div class="col-lg-6 col-md-12">
+                <div class="card shadow p-4">
+                    <h5 class="text-center fw-bold mb-3">Répartition des Dossiers</h5>
+                    <canvas id="chartDossiers" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+            <!-- Statistiques des Enseignants -->
+            <div class="col-lg-6 col-md-12">
+                <div class="card shadow p-4">
+                    <h5 class="text-center fw-bold mb-3">Statistiques des Enseignants</h5>
+                    <canvas id="chartEnseignants" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Styles Améliorés -->
+<style>
+    /* Style Global */
+    .container {
+        max-width: 1200px;
+    }
+    h1, h3 {
+        color: #4e73df;
+    }
+
+    /* Style des Cartes de Statistiques */
+    .stat-card {
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        color: white;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    .stat-card .icon-box {
+        background-color: rgba(255, 255, 255, 0.2);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .stat-card p {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .stat-card h3 {
+        font-size: 24px;
+    }
+
+    /* Style des Graphiques */
+    canvas {
+        width: 100%;
+        max-height: 300px;
+    }
+</style>
+
+<!-- Script Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Données dynamiques passées par Django
+    const dataDossiers = {{ nombre_dossiers|default:0 }};
+    const dataEnseignants = {{ nombre_enseignants|default:0 }};
+    const dataUfr = {{ nombre_ufr|default:0 }};
+    const dataFilieres = {{ nombre_filiere|default:0 }};
+
+    // Graphique circulaire pour la répartition des Dossiers
+    const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
+    new Chart(ctxDossiers, {
+        type: 'doughnut',
+        data: {
+            labels: ['Dossiers', 'UFR', 'Filières'],
+            datasets: [{
+                data: [dataDossiers, dataUfr, dataFilieres],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            plugins: {
+                legend: { position: 'top' }
+            }
+        }
+    });
+
+    // Graphique en barres pour les statistiques des Enseignants
+    const ctxEnseignants = document.getElementById('chartEnseignants').getContext('2d');
+    new Chart(ctxEnseignants, {
+        type: 'bar',
+        data: {
+            labels: ['Enseignants', 'Dossiers', 'UFR', 'Filières'],
+            datasets: [{
+                data: [dataEnseignants, dataDossiers, dataUfr, dataFilieres],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#d6a917'],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+{% endblock %}

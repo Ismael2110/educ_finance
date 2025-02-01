@@ -17,6 +17,11 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 
+from parameter.models import Enseignant, UFR, Filiere
+from .models import Dossier
+
+from django.views.generic import TemplateView
+
 # Create your views here.
 #finis
 
@@ -160,5 +165,55 @@ class HistoriqueDossier(CustomListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["add_url"] = reverse_lazy("gestion_administratif:dossier-create") if context.get("can_add") else None
+
+        return context
+
+
+
+class StatistiquesView(View):
+    def get(self, request):
+        try:
+            context = {
+                'nombre_dossiers': Dossier.objects.count(),
+                'nombre_enseignants': Enseignant.objects.count(),
+                'nombre_ufr': UFR.objects.count(),
+                'nombre_filiere': Filiere.objects.count(),
+                'nombre_dossiers_inities': Dossier.objects.filter(status="initie").count(),
+                'nombre_dossiers_partiels': Dossier.objects.filter(status="partiellement payé").count(),
+                'nombre_dossiers_soldes': Dossier.objects.filter(status="soldé").count(),
+                'dossiers': Dossier.objects.all(),
+            }
+        except Exception as e:
+            context = {
+                'error': f"Une erreur est survenue : {str(e)}"
+            }
+        return render(request, 'statistiques.html', context)
+    
+    
+class StatistiquesView(TemplateView):
+    template_name = 'statistiques.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Calculs dynamiques depuis la base de données
+        nombre_dossiers = Dossier.objects.count()
+        nombre_enseignants = Enseignant.objects.count()
+        nombre_ufr = UFR.objects.count()
+        nombre_filiere = Filiere.objects.count()
+        
+        # Préparation des statistiques globales
+        context['statistiques'] = [
+            {'icon': 'folder', 'label': 'Dossiers', 'value': nombre_dossiers},
+            {'icon': 'user', 'label': 'Enseignants', 'value': nombre_enseignants},
+            {'icon': 'server', 'label': 'UFR', 'value': nombre_ufr},
+            {'icon': 'command', 'label': 'Filières', 'value': nombre_filiere},
+        ]
+
+        # Ajout des données pour les graphiques
+        context['nombre_dossiers'] = nombre_dossiers
+        context['nombre_ufr'] = nombre_ufr
+        context['nombre_filiere'] = nombre_filiere
+        context['nombre_enseignants'] = nombre_enseignants
 
         return context

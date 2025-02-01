@@ -19,9 +19,5 @@ urlpatterns = [
     #path('Paiement/<uuid:pk>/<str:action>/', views.valider_ou_rejeter_Paiement, name='valider_ou_rejeter_Paiement'),
     path('paiement/dossier/list', views.DossierValideListView.as_view(), name='dossier-list'),
     path('paiements/create/<uuid:pk>', views.DossierPaiementCreateView.as_view(), name='dossier-paiement'),
-    path('paiements/<uuid:pk>/recu/', PrintReceiptView.as_view(), name='print_receipt'),
-    
-    
-    
-    
+    path('paiements/<uuid:pk>/recu/', PrintReceiptView.as_view(), name='print_receipt'),    
 ]

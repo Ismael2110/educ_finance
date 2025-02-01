@@ -307,7 +307,7 @@ class UserProfilePhotoUpdateView(cviews.CustomUpdateView):
 
     def get_success_url(self):
         return reverse(
-            "auth:user-detail", kwargs={"pk": self.kwargs.get(self.pk_url_kwarg)}
+            "auth:user-detail", kwargs={"pk": self.kwargs.get(self.user)}
         )
 
 
@@ -647,3 +647,23 @@ class User2CreateView(FormView):
         print("activation existe", activation.exists())
         activation.update(is_active=False)
         return JsonResponse({"success_url": self.get_success_url()})
+
+
+
+class ActivityLogView(cviews.CustomListView):
+    model = models.Activity
+    template_name = 'private/log.html'
+    
+
+    def get_queryset(self):
+        return models.Activity.objects.all().order_by('-timestamp')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_url"] = True
+        context["can_add"] = False
+        context["can_update"] = False
+        context["can_delete"] = False
+        context["card_title"] ="Historique des actions."
+        
+        return context

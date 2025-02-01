@@ -74,9 +74,6 @@ class User(AbstractUser, CommonAbstractModel):
             ("access_statistics", "Can access to statistics module"),
             ("access_gestion_finance", "Can access to gestion_finance module"),
             ("access_gestion_administratif", "Can access to gestion_administratif module"),
-            ("view_dossier_enseignant", "Can access to dossier"),
-            ("gestion_administratif.view_status_dossier", "Can access to gestion_administratif statut"),
-            ("gestion_administratif.view_rapport_academique", "Can access to gestion_administratif rapport"),
             ("is_responsable_administrative", "est un responsable administratif"),
             ("is_responsable_financier", "est un responsable financier"),
             
@@ -131,3 +128,15 @@ class Assign(CommonAbstractModel):
     group_assign = models.ForeignKey(
         "auth.Group", on_delete=CONSTRAINT, null=True, blank=True
     )
+    
+    
+class Activity(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=200)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=200, null=True, blank=True)
+    os = models.CharField(max_length=200, null=True, blank=True)
+
+    def _str_(self):
+        return f"{self.user.username} - {self.action} at {self.timestamp}"

@@ -1,6 +1,9 @@
 from django.urls import resolve
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from user_agents import parse
+from xauth. models import Activity
+from django.utils import timezone
 
 from educ_finance.decorators import admin_required, superuser_required
 
@@ -62,5 +65,34 @@ class LoginRequiredMiddleware:
 
         # Code to be executed for each request/response after
         # the view is called.
+
+        return response
+
+
+from django.utils import timezone
+from user_agents import parse
+
+class ActivityMiddleware:
+    def __init__(self, get_response):  # Corrige la syntaxe ici
+        self.get_response = get_response
+
+    def __call__(self, request):  # Corrige la syntaxe ici
+        response = self.get_response(request)
+
+        if request.user.is_authenticated:
+            user_agent_str = request.META.get('HTTP_USER_AGENT', '')
+            user_agent = parse(user_agent_str)
+            os = user_agent.os.family if user_agent else 'Unknown'  # Gère le cas où `parse` échoue
+            ip_address = request.META.get('REMOTE_ADDR', '0.0.0.0')  # Évite une erreur si absent
+
+            action = f"Visited {request.path}"
+            Activity.objects.create(
+                user=request.user,
+                action=action,
+                timestamp=timezone.now(),
+                ip_address=ip_address,
+                user_agent=user_agent_str,
+                os=os
+            )
 
         return response

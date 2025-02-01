@@ -1,0 +1,23 @@
+{% extends "list-style.html" %}
+{% load icon %}
+{% load humanize %}
+{% load static %}
+
+
+
+{% block table-headers %}
+<th>Utilisateur </th>
+<th>Système d'exploitation</th>
+<th>Adresse Ip</th>
+<th>Date</th>
+<th>Action</th>
+<th>User agent</th>
+{% endblock table-headers %}
+{% block table-rows %}
+<td>{{ object.user}}</td>
+<td>{{ object.os}}</td>
+<td>{{ object.ip_address}}</td>
+<td>{{ object.timestamp}}</td>
+<td>{{ object.action}}</td>
+<td>{{ object.user_agent}}</td>
+{% endblock table-rows %}

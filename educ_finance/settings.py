@@ -101,6 +101,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "educ_finance.middlewares.LoginRequiredMiddleware",
+    "educ_finance.middlewares.ActivityMiddleware",
 ]
 
 if ONLINE:
@@ -438,4 +439,5 @@ WEASYPRINT_BASEURL = 'http://127.0.0.1:8000'  # Modifiez en fonction de votre UR
 
 SITE_PROTOCOL = "http"
 SITE_DOMAIN = "localhost:8000"
+
 
