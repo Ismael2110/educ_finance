@@ -3,112 +3,45 @@
 {% load static %}
 
 {% block stylesheet %}
+<!-- CSS personnalisé -->
 <link rel="stylesheet" href="{% static 'css/scroll_card2.css' %}">
 <style>
-    /* Amélioration générale des cartes */
     .card {
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        background-color: #ffffff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        margin-bottom: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
     }
+
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* En-tête principale */
     .card-header {
         background-color: #007bff;
         color: #fff;
-        font-weight: bold;
-        padding: 1.5rem;
-        font-size: 1.5rem;
+        padding: 1rem;
         text-align: center;
-    }
-
-    /* Contenu de la carte */
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    /* Table des détails */
-    .details-table {
-        width: 100%;
-        margin-top: 1rem;
-        border-collapse: collapse;
-    }
-    .details-table th, .details-table td {
-        border: 1px solid #dee2e6;
-        padding: 0.75rem;
-        text-align: left;
-    }
-    .details-table th {
-        background-color: #f8f9fa;
         font-weight: bold;
-        color: #444;
-    }
-    .details-table td {
-        color: #555;
     }
 
-    /* Section des boutons alignés */
-    .btn-group-side {
-        display: flex;
-        justify-content: center; /* Centre les boutons horizontalement */
-        gap: 1rem; /* Espace uniforme entre les boutons */
-        margin-top: 1.5rem;
-    }
-    .btn-group-side .btn {
-        width: 150px; /* Assure une largeur uniforme pour les boutons */
-        text-align: center; /* Centrage du contenu */
-        padding: 0.75rem;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    .btn-group-side .btn:hover {
-        transform: scale(1.05); /* Effet d’agrandissement au survol */
-    }
-
-    /* Bouton Retour */
-    .btn-group-back {
-        text-align: center; /* Centre le bouton Retour */
-        margin-bottom: 1.5rem;
-    }
-
-    /* Typographie */
-    h2, .card-title {
-        font-size: 1.8rem;
-        font-weight: 600;
-        color: #333;
-    }
-
-    /* Adaptation pour les écrans mobiles */
-    @media (max-width: 768px) {
-        .btn-group-side {
-            flex-direction: column; /* Affiche les boutons en colonne */
-            gap: 1rem; /* Espace entre les boutons */
-            align-items: center; /* Centre les boutons dans la colonne */
-        }
-        .btn-group-side .btn {
-            width: 100%; /* Les boutons prennent toute la largeur */
-        }
+    .btn-back {
+        float: right;
+        margin-bottom: 1rem;
     }
 </style>
 {% endblock stylesheet %}
 
 {% block breadcrumb %}
+<!-- Fil d'Ariane -->
 <div class="row page-titles mx-0">
     <div class="col-sm-6 p-md-0">
-        <div class="welcome-text">
-            <h2>{{ card_title }}</h2>
-        </div>
+        <h2>{{ card_title }}</h2>
     </div>
-    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <div class="col-sm-6 p-md-0 justify-content-sm-end d-flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active">{{ card_title }}</li>
         </ol>
     </div>
 </div>
@@ -117,63 +50,48 @@
 {% block title %}{{ card_title }}{% endblock title %}
 
 {% block content %}
-<div class="row justify-content-center">
+<!-- Contenu principal -->
+<div class="row">
     <div class="col-12">
-        <div class="row">
-            <!-- Cadre contenant les détails -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        {{ object.label }}
-                    </div>
-                    <div class="card-body">
-                        <table class="details-table">
-                            <tbody>
-                                <tr>
-                                    <th>Code</th>
-                                    <td>{{ object.code }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Libellé</th>
-                                    <td>{{ object.label }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Description</th>
-                                    <td>{{ object.description }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nombre de modules</th>
-                                    <td>{{ object.module_count }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Responsable</th>
-                                    <td>{{ object.manager }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div class="card pt-4">
+            <!-- Bouton Retour -->
+            <div class="d-flex justify-content-end mb-4">
+                <a href="{% url list_url %}" class="btn btn-outline-secondary btn-sm btn-back">
+                    {% icon "corner-up-left" height="16px" width="16px" %} Retour
+                </a>
+            </div>
+
+            <!-- Section Détails -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    Options / Détails
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><th>Code</th><td>{{ object.code }}</td></tr>
+                            <tr><th>Libellé</th><td>{{ object.label }}</td></tr>
+                            <tr><th>Description</th><td>{{ object.description }}</td></tr>
+                            <tr>
+                                <th>Département Associé</th>
+                                <td>{{ object.departement }}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    <!-- Boutons d'action -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
+                            {% icon "edit" height="16px" width="16px" %} Modifier
+                        </a>
+                        <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
+                            {% icon "trash" height="16px" width="16px" %} Supprimer
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Section des boutons -->
-            <div class="col-md-6">
-                <!-- Bouton Retour -->
-                <div class="btn-group-back">
-                    <a href="javascript:history.back()" class="btn btn-outline-primary">
-                        {% icon "arrow-left" height="16px" width="16px" %} Retour
-                    </a>
-                </div>
-
-                <!-- Boutons Modifier et Supprimer -->
-                <div class="btn-group-side">
-                    <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
-                        {% icon "edit" height="16px" width="16px" %} Modifier
-                    </a>
-                    <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
-                        {% icon "trash" height="16px" width="16px" %} Supprimer
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </div>

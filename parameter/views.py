@@ -339,11 +339,11 @@ class TypePaiementDetailView(CustomDetailView):
 class TypePaiementDeleteView(CustomDeleteView):
     model = TypePaiement
     name = "typepaiement"
-    template_name ="delete.html"
+    template_name = "delete.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        object = self.get_object()  # Utilisation de self.get_object()
-        context["card_title"] = f"Suppression du type de paiement {object.nom}"
-        context["list_url"] =reverse_lazy("parameter:typepaiement-list")  # URL du retour
+        object = self.get_object()  # Récupération de l'objet
+        context["card_title"] = f"Suppression du type de paiement {object.label}"  # Correction ici
+        context["list_url"] = reverse_lazy("parameter:typepaiement-list")  # URL du retour
         return context
-    

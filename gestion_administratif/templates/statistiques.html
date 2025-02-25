@@ -3,25 +3,25 @@
 
 {% block content %}
 <div class="container py-5">
-    <!-- Titre et Introduction -->
+    <!-- Titre Principal -->
     <div class="row text-center mb-5">
-        <h1 class="fw-bold">Rapport de Statistiques Académiques</h1>
-        <p class="lead text-muted">Un aperçu détaillé des statistiques clés de notre institution pour la période en cours.</p>
+        <h1 class="fw-bold text-primary">📊 Rapport des Statistiques Académiques</h1>
+        <p class="lead text-muted">Une vue détaillée et interactive des performances académiques.</p>
     </div>
 
     <!-- Section des Statistiques Globales -->
     <section class="mb-5">
-        <h3 class="text-center fw-bold mb-4">Statistiques Globales</h3>
+        <h3 class="text-center fw-bold mb-4 text-secondary">📌 Statistiques Clés</h3>
         <div class="row g-4">
             {% for card in statistiques %}
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-md-6">
                 <div class="stat-card">
                     <div class="icon-box">
                         <i class="material-icons opacity-10">{% icon card.icon %}</i>
                     </div>
-                    <div>
-                        <p class="text-sm text-uppercase fw-bold">{{ card.label }}</p>
-                        <h3 class="fw-bold">{{ card.value }}</h3>
+                    <div class="text-center">
+                        <p class="text-uppercase fw-bold">{{ card.label }}</p>
+                        <h3 class="fw-bold counter">{{ card.value }}</h3>
                     </div>
                 </div>
             </div>
@@ -31,29 +31,27 @@
 
     <!-- Section des Graphiques -->
     <section>
-        <h3 class="text-center fw-bold mb-4">Analyses Graphiques</h3>
+        <h3 class="text-center fw-bold mb-4 text-secondary">📈 Analyses Graphiques</h3>
         <div class="row g-4">
-            <!-- Répartition des Dossiers -->
             <div class="col-lg-6 col-md-12">
-                <div class="card shadow p-4">
-                    <h5 class="text-center fw-bold mb-3">Répartition des Dossiers</h5>
-                    <canvas id="chartDossiers" style="max-height: 300px;"></canvas>
+                <div class="card shadow p-4 animated-card">
+                    <h5 class="text-center fw-bold mb-3">📊 Répartition des Dossiers</h5>
+                    <canvas id="chartDossiers"></canvas>
                 </div>
             </div>
-            <!-- Statistiques des Enseignants -->
             <div class="col-lg-6 col-md-12">
-                <div class="card shadow p-4">
-                    <h5 class="text-center fw-bold mb-3">Statistiques des Enseignants</h5>
-                    <canvas id="chartEnseignants" style="max-height: 300px;"></canvas>
+                <div class="card shadow p-4 animated-card">
+                    <h5 class="text-center fw-bold mb-3">👨‍🏫 Statistiques des Enseignants</h5>
+                    <canvas id="chartEnseignants"></canvas>
                 </div>
             </div>
         </div>
     </section>
 </div>
 
-<!-- Styles Améliorés -->
+<!-- Styles Modernes -->
 <style>
-    /* Style Global */
+    /* Design Global */
     .container {
         max-width: 1200px;
     }
@@ -61,7 +59,7 @@
         color: #4e73df;
     }
 
-    /* Style des Cartes de Statistiques */
+    /* Cartes de Statistiques */
     .stat-card {
         background: linear-gradient(135deg, #4e73df, #224abe);
         color: white;
@@ -92,10 +90,23 @@
         font-size: 24px;
     }
 
-    /* Style des Graphiques */
-    canvas {
-        width: 100%;
-        max-height: 300px;
+    /* Animations et effets */
+    .animated-card {
+        transition: transform 0.3s ease-in-out;
+    }
+    .animated-card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Effet de comptage des statistiques */
+    .counter {
+        font-size: 30px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 </style>
 
@@ -108,9 +119,8 @@
     const dataUfr = {{ nombre_ufr|default:0 }};
     const dataFilieres = {{ nombre_filiere|default:0 }};
 
-    // Graphique circulaire pour la répartition des Dossiers
-    const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
-    new Chart(ctxDossiers, {
+    // Répartition des Dossiers (Graphique Doughnut)
+    new Chart(document.getElementById('chartDossiers').getContext('2d'), {
         type: 'doughnut',
         data: {
             labels: ['Dossiers', 'UFR', 'Filières'],
@@ -121,16 +131,11 @@
                 borderWidth: 1,
             }]
         },
-        options: {
-            plugins: {
-                legend: { position: 'top' }
-            }
-        }
+        options: { plugins: { legend: { position: 'top' } } }
     });
 
-    // Graphique en barres pour les statistiques des Enseignants
-    const ctxEnseignants = document.getElementById('chartEnseignants').getContext('2d');
-    new Chart(ctxEnseignants, {
+    // Statistiques des Enseignants (Graphique en Barres)
+    new Chart(document.getElementById('chartEnseignants').getContext('2d'), {
         type: 'bar',
         data: {
             labels: ['Enseignants', 'Dossiers', 'UFR', 'Filières'],
@@ -143,13 +148,29 @@
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
         }
+    });
+
+    // Animation des chiffres (compteur dynamique)
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.counter').forEach((counter) => {
+            let target = parseInt(counter.innerText);
+            let count = 0;
+            let increment = target / 100;
+            
+            let updateCounter = () => {
+                if (count < target) {
+                    count += increment;
+                    counter.innerText = Math.ceil(count);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCounter();
+        });
     });
 </script>
 {% endblock %}

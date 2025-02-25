@@ -3,74 +3,45 @@
 {% load static %}
 
 {% block stylesheet %}
+<!-- CSS personnalisé -->
 <link rel="stylesheet" href="{% static 'css/scroll_card2.css' %}">
 <style>
-    /* Amélioration de la carte */
     .card {
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        background-color: #ffffff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s, box-shadow 0.3s;
     }
+
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* En-tête de la carte */
     .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
+        background-color: #007bff;
+        color: #fff;
         padding: 1rem;
-        font-weight: bold;
-        font-size: 1.25rem;
         text-align: center;
-        color: #333;
-    }
-    
-    /* Contenu de la carte */
-    .card-body {
-        padding: 1.5rem;
+        font-weight: bold;
     }
 
-    /* Table */
-    .table-responsive {
-        margin-top: 1rem;
-    }
-
-    /* Typographie et couleurs */
-    h2, .card-title {
-        font-size: 1.75rem;
-        color: #444;
-    }
-
-    /* Styles du bouton de retour */
     .btn-back {
         float: right;
         margin-bottom: 1rem;
-    }
-
-    /* Adaptation mobile */
-    @media (max-width: 768px) {
-        .card {
-            margin-bottom: 1rem;
-        }
     }
 </style>
 {% endblock stylesheet %}
 
 {% block breadcrumb %}
+<!-- Fil d'Ariane -->
 <div class="row page-titles mx-0">
     <div class="col-sm-6 p-md-0">
-        <div class="welcome-text">
-            <h2>{{ card_title }}</h2>
-        </div>
+        <h2>{{ card_title }}</h2>
     </div>
-    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <div class="col-sm-6 p-md-0 justify-content-sm-end d-flex">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ list_of }}</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">{{ card_title }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ list_url }}">{{ list_of }}</a></li>
+            <li class="breadcrumb-item active">{{ card_title }}</li>
         </ol>
     </div>
 </div>
@@ -79,60 +50,43 @@
 {% block title %}{{ card_title }}{% endblock title %}
 
 {% block content %}
-
-
+<!-- Contenu principal -->
 <div class="row">
     <div class="col-12">
         <div class="card pt-4">
-            <div class="d-flex flex-row mb-5 mt-4 justify-content-end">
+            <!-- Bouton Retour -->
+            <div class="d-flex justify-content-end mb-4">
                 <a href="{% url list_url %}" class="btn btn-outline-secondary btn-sm btn-back">
                     {% icon "corner-up-left" height="16px" width="16px" %} Retour
                 </a>
             </div>
-                <div class="row w-100">
-                    <!-- Section Titre et Description -->
-                    <div class="col-md-5 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">{{ object.label }}</strong>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{% if object.image_url %}{{ object.image_url }}{% else %}{% static 'images/avatar1.png' %}{% endif %}" 
-                                     alt="Image description" class="img-fluid" style="max-width: 70%; height: auto; border-radius: 10px;">
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Section Détails et Options -->
-                    <div class="col-md-7 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Options / Détails</h5>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        <tr><th class="table-light">Code</th><td>{{ object.code }}</td></tr>
-                                        <tr><th class="table-light">Libellé</th><td>{{ object.label }}</td></tr>
-                                        <tr><th class="table-light">Description</th><td>{{ object.description }}</td></tr>
-                                    </tbody>
-                                </table>
+            <!-- Section Détails -->
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    Options / Détails
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr><th>Code</th><td>{{ object.code }}</td></tr>
+                            <tr><th>Libellé</th><td>{{ object.label }}</td></tr>
+                            <tr><th>Description</th><td>{{ object.description }}</td></tr>
+                        </tbody>
+                    </table>
 
-                                <!-- Boutons d'Action -->
-                                <div class="d-flex justify-content-between mt-4">
-                                    <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
-                                        {% icon "edit" height="16px" width="16px" %} Modifier
-                                    </a>
-                                    <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
-                                        {% icon "trash" height="16px" width="16px" %} Supprimer
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Boutons d'action -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url update_url object.slug|default:object.id %}" class="btn btn-outline-success">
+                            {% icon "edit" height="16px" width="16px" %} Modifier
+                        </a>
+                        <a href="{% url delete_url object.slug|default:object.id %}" class="btn btn-outline-danger">
+                            {% icon "trash" height="16px" width="16px" %} Supprimer
+                        </a>
                     </div>
-                    
                 </div>
             </div>
+
         </div>
     </div>
 </div>

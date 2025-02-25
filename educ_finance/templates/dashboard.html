@@ -1,7 +1,19 @@
 {% extends 'bases/base.html' %}
 {% load icon %}
+
 {% block content %}
-<div class="container-fluid py-4">
+<div class="container-fluid py-0"> <!-- Réduit le padding vertical ici -->
+    <!-- Titre et Breadcrumb -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark">📊 Tableau de Bord</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tableau de Bord</li>
+            </ol>
+        </nav>
+    </div>
+
     <!-- Section des Statistiques -->
     <div class="row g-4">
         <!-- Dossiers -->
@@ -82,26 +94,27 @@
 </div>
 
 <!-- Lien vers Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous" ></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
 <script>
     // Données dynamiques Django
-    const dataDossiers = {{ nombre_dossiers|default:0 }};
-    const dataEnseignants = {{ nombre_enseignants|default:0 }};
-    const dataUfr = {{ nombre_ufr|default:0 }};
-    const dataFilieres = {{ nombre_filiere|default:0 }};
+    const dataDossiers = {{ nombre_dossiers|default:0 }}; 
+    const dataEnseignants = {{ nombre_enseignants|default:0 }}; 
+    const dataUfr = {{ nombre_ufr|default:0 }}; 
+    const dataFilieres = {{ nombre_filiere|default:0 }}; 
 
-    // Diagramme circulaire pour les dossiers
+    // Diagramme à aire pour les dossiers
     const ctxDossiers = document.getElementById('chartDossiers').getContext('2d');
     const chartDossiers = new Chart(ctxDossiers, {
-        type: 'doughnut',
+        type: 'line',  // Changer le type en 'line' pour un diagramme en ligne
         data: {
-            labels: ['Dossiers', 'UFR', 'Filières'],
+            labels: ['Dossiers', 'UFR', 'Filières'], 
             datasets: [{
                 label: 'Répartition des dossiers',
                 data: [dataDossiers, dataUfr, dataFilieres],
-                backgroundColor: ['#317AC1', '#7DA7D9', '#f8d7da'],
-                borderColor: ['#ffffff'],
-                borderWidth: 1
+                backgroundColor: 'rgba(49, 122, 193, 0.2)',  // Couleur de l'aire
+                borderColor: '#317AC1', // Couleur de la ligne
+                borderWidth: 2,
+                fill: true  // Remplir l'aire sous la courbe
             }]
         },
         options: {
@@ -109,6 +122,11 @@
             plugins: {
                 legend: {
                     position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
