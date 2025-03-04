@@ -5,26 +5,18 @@
         <ul class="metismenu" id="menu">
             <li><a href="{% url 'index-view' %}" aria-expanded="false">{% icon "book" class="css-class" %}<span
                 class="nav-text"> Tableau de Bord</span></a></li>
-
             {% if perms.xauth.access_gestion_administratif %}
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
                 <i class="icon icon-app-store"></i><span class="nav-text">Gestion Administrative</span></a>
                 <ul aria-expanded="false">
-                    {% if perms.gestion_administratif.list_dossier %}
                     <li><a href="{% url 'gestion_administratif:dossier-list' %}">Dossiers Enseignants</a></li>
-                    {% endif %}
-                    {% if perms.gestion_administratif.histori_dossier %}
                     <li><a href="{% url 'gestion_administratif:historique-dossier' %}">Etat de Paiement</a></li>
-                    {% endif %}
-                    {% if perms.gestion_administratif.rapport_dossier %}
                     <li><a href="{% url 'gestion_administratif:statistiques' %}">
                         <span>Rapport</span>
                     </a></li>
-                    {% endif %}
                 </ul>
             </li>
             {% endif %}
-
             {% if perms.xauth.access_gestion_finance %}
     <li>
         <a class="has-arrow" href="javascript:void()" aria-expanded="false">

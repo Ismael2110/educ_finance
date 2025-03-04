@@ -53,10 +53,11 @@ class User(AbstractUser, CommonAbstractModel):
     def get_role(self):
         if self.is_staff:
             return "admin"
-        elif hasattr(self, "assign"):
+        elif hasattr(self, "assign") and self.assign and self.assign.group_assign:
             return self.assign.group_assign.name
         else:
-            return "-"
+            return "-"  
+
 
     def __str__(self):
         return f"{self.get_full_name()}"
